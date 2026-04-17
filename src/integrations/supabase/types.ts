@@ -14,16 +14,181 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      leads: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          last_name: string
+          message: string | null
+          phone: string | null
+          preferred_contact: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          type: Database["public"]["Enums"]["lead_type"]
+          vehicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          last_name: string
+          message?: string | null
+          phone?: string | null
+          preferred_contact?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          type?: Database["public"]["Enums"]["lead_type"]
+          vehicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          message?: string | null
+          phone?: string | null
+          preferred_contact?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          type?: Database["public"]["Enums"]["lead_type"]
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vehicles: {
+        Row: {
+          beds: number
+          brand: string
+          condition: Database["public"]["Enums"]["vehicle_condition"]
+          cover_image: string | null
+          created_at: string
+          description: string
+          features: string[] | null
+          fuel: string | null
+          id: string
+          images: string[] | null
+          is_featured: boolean
+          length_cm: number | null
+          mileage: number | null
+          model: string
+          power_hp: number | null
+          price: number
+          seats: number
+          short_description: string | null
+          slug: string
+          status: Database["public"]["Enums"]["vehicle_status"]
+          title: string
+          transmission: string | null
+          type: Database["public"]["Enums"]["vehicle_type"]
+          updated_at: string
+          year: number
+        }
+        Insert: {
+          beds?: number
+          brand: string
+          condition?: Database["public"]["Enums"]["vehicle_condition"]
+          cover_image?: string | null
+          created_at?: string
+          description: string
+          features?: string[] | null
+          fuel?: string | null
+          id?: string
+          images?: string[] | null
+          is_featured?: boolean
+          length_cm?: number | null
+          mileage?: number | null
+          model: string
+          power_hp?: number | null
+          price: number
+          seats?: number
+          short_description?: string | null
+          slug: string
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          title: string
+          transmission?: string | null
+          type: Database["public"]["Enums"]["vehicle_type"]
+          updated_at?: string
+          year: number
+        }
+        Update: {
+          beds?: number
+          brand?: string
+          condition?: Database["public"]["Enums"]["vehicle_condition"]
+          cover_image?: string | null
+          created_at?: string
+          description?: string
+          features?: string[] | null
+          fuel?: string | null
+          id?: string
+          images?: string[] | null
+          is_featured?: boolean
+          length_cm?: number | null
+          mileage?: number | null
+          model?: string
+          power_hp?: number | null
+          price?: number
+          seats?: number
+          short_description?: string | null
+          slug?: string
+          status?: Database["public"]["Enums"]["vehicle_status"]
+          title?: string
+          transmission?: string | null
+          type?: Database["public"]["Enums"]["vehicle_type"]
+          updated_at?: string
+          year?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      lead_status: "nouveau" | "en_cours" | "traite" | "archive"
+      lead_type: "contact" | "rappel" | "vehicule" | "reprise" | "financement"
+      vehicle_condition: "neuf" | "occasion"
+      vehicle_status: "disponible" | "reserve" | "vendu"
+      vehicle_type: "profile" | "integral" | "fourgon" | "capucine"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +315,13 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      lead_status: ["nouveau", "en_cours", "traite", "archive"],
+      lead_type: ["contact", "rappel", "vehicule", "reprise", "financement"],
+      vehicle_condition: ["neuf", "occasion"],
+      vehicle_status: ["disponible", "reserve", "vendu"],
+      vehicle_type: ["profile", "integral", "fourgon", "capucine"],
+    },
   },
 } as const
