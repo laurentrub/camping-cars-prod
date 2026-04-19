@@ -9,6 +9,7 @@ import Index from "./pages/Index.tsx";
 import Catalogue from "./pages/Catalogue.tsx";
 import VehicleDetail from "./pages/VehicleDetail.tsx";
 import Services from "./pages/Services.tsx";
+import Reprise from "./pages/Reprise.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -18,6 +19,7 @@ import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminVehicles from "./pages/admin/AdminVehicles.tsx";
 import AdminLeads from "./pages/admin/AdminLeads.tsx";
+import AdminTradeIns from "./pages/admin/AdminTradeIns.tsx";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +35,7 @@ const App = () => (
             <Route path="/catalogue" element={<Catalogue />} />
             <Route path="/vehicule/:slug" element={<VehicleDetail />} />
             <Route path="/services" element={<Services />} />
+            <Route path="/reprise" element={<Reprise />} />
             <Route path="/a-propos" element={<About />} />
             <Route path="/contact" element={<Contact />} />
           </Route>
@@ -42,6 +45,7 @@ const App = () => (
             <Route index element={<AdminDashboard />} />
             <Route path="vehicles" element={<AdminVehicles />} />
             <Route path="leads" element={<AdminLeads />} />
+            <Route path="trade-ins" element={<AdminTradeIns />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

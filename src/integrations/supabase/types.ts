@@ -64,6 +64,84 @@ export type Database = {
           },
         ]
       }
+      trade_ins: {
+        Row: {
+          admin_notes: string | null
+          ai_analysis: string | null
+          brand: string
+          condition: Database["public"]["Enums"]["trade_in_condition"]
+          created_at: string
+          email: string
+          estimate_high: number | null
+          estimate_low: number | null
+          first_name: string
+          fuel: string | null
+          id: string
+          last_name: string
+          length_cm: number | null
+          message: string | null
+          mileage: number
+          model: string
+          phone: string | null
+          photos: string[] | null
+          seats: number | null
+          status: Database["public"]["Enums"]["trade_in_status"]
+          updated_at: string
+          vehicle_type: Database["public"]["Enums"]["vehicle_type"]
+          year: number
+        }
+        Insert: {
+          admin_notes?: string | null
+          ai_analysis?: string | null
+          brand: string
+          condition: Database["public"]["Enums"]["trade_in_condition"]
+          created_at?: string
+          email: string
+          estimate_high?: number | null
+          estimate_low?: number | null
+          first_name: string
+          fuel?: string | null
+          id?: string
+          last_name: string
+          length_cm?: number | null
+          message?: string | null
+          mileage: number
+          model: string
+          phone?: string | null
+          photos?: string[] | null
+          seats?: number | null
+          status?: Database["public"]["Enums"]["trade_in_status"]
+          updated_at?: string
+          vehicle_type: Database["public"]["Enums"]["vehicle_type"]
+          year: number
+        }
+        Update: {
+          admin_notes?: string | null
+          ai_analysis?: string | null
+          brand?: string
+          condition?: Database["public"]["Enums"]["trade_in_condition"]
+          created_at?: string
+          email?: string
+          estimate_high?: number | null
+          estimate_low?: number | null
+          first_name?: string
+          fuel?: string | null
+          id?: string
+          last_name?: string
+          length_cm?: number | null
+          message?: string | null
+          mileage?: number
+          model?: string
+          phone?: string | null
+          photos?: string[] | null
+          seats?: number | null
+          status?: Database["public"]["Enums"]["trade_in_status"]
+          updated_at?: string
+          vehicle_type?: Database["public"]["Enums"]["vehicle_type"]
+          year?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -186,6 +264,8 @@ export type Database = {
       app_role: "admin" | "user"
       lead_status: "nouveau" | "en_cours" | "traite" | "archive"
       lead_type: "contact" | "rappel" | "vehicule" | "reprise" | "financement"
+      trade_in_condition: "excellent" | "bon" | "moyen" | "a_renover"
+      trade_in_status: "nouveau" | "en_cours" | "estime" | "refuse" | "archive"
       vehicle_condition: "neuf" | "occasion"
       vehicle_status: "disponible" | "reserve" | "vendu"
       vehicle_type: "profile" | "integral" | "fourgon" | "capucine"
@@ -319,6 +399,8 @@ export const Constants = {
       app_role: ["admin", "user"],
       lead_status: ["nouveau", "en_cours", "traite", "archive"],
       lead_type: ["contact", "rappel", "vehicule", "reprise", "financement"],
+      trade_in_condition: ["excellent", "bon", "moyen", "a_renover"],
+      trade_in_status: ["nouveau", "en_cours", "estime", "refuse", "archive"],
       vehicle_condition: ["neuf", "occasion"],
       vehicle_status: ["disponible", "reserve", "vendu"],
       vehicle_type: ["profile", "integral", "fourgon", "capucine"],

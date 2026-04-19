@@ -2,13 +2,14 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Truck, Inbox, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Truck, Inbox, Repeat, LogOut, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard, end: true },
   { to: "/admin/vehicles", label: "Véhicules", icon: Truck },
   { to: "/admin/leads", label: "Demandes", icon: Inbox },
+  { to: "/admin/trade-ins", label: "Reprises", icon: Repeat },
 ];
 
 const AdminLayout = () => {
