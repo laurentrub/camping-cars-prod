@@ -1,1 +1,4 @@
 project_id = "lqzvzzvwzyzsuejkgytb"
+
+[functions.estimate-trade-in]
+verify_jwt = false
