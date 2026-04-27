@@ -20,6 +20,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
 import AdminVehicles from "./pages/admin/AdminVehicles.tsx";
 import AdminLeads from "./pages/admin/AdminLeads.tsx";
 import AdminTradeIns from "./pages/admin/AdminTradeIns.tsx";
+import AdminUsers from "./pages/admin/AdminUsers.tsx";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,7 @@ const App = () => (
             <Route path="vehicles" element={<AdminVehicles />} />
             <Route path="leads" element={<AdminLeads />} />
             <Route path="trade-ins" element={<AdminTradeIns />} />
+            <Route path="users" element={<AdminUsers />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
