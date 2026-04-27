@@ -2,7 +2,7 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { LayoutDashboard, Truck, Inbox, Repeat, LogOut, ExternalLink } from "lucide-react";
+import { LayoutDashboard, Truck, Inbox, Repeat, Users, LogOut, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -10,6 +10,7 @@ const NAV = [
   { to: "/admin/vehicles", label: "Véhicules", icon: Truck },
   { to: "/admin/leads", label: "Demandes", icon: Inbox },
   { to: "/admin/trade-ins", label: "Reprises", icon: Repeat },
+  { to: "/admin/users", label: "Utilisateurs", icon: Users },
 ];
 
 const AdminLayout = () => {
