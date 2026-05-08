@@ -81,6 +81,16 @@ const AdminUsers = () => {
         </Button>
       </div>
 
+      <div className="relative max-w-md">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Rechercher par email ou ID…"
+          className="pl-9"
+        />
+      </div>
+
       <div className="rounded-lg border border-border bg-card">
         {loading ? (
           <div className="flex items-center justify-center p-12 text-muted-foreground">
@@ -88,6 +98,10 @@ const AdminUsers = () => {
           </div>
         ) : users.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">Aucun utilisateur</div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">
+            Aucun résultat pour « {query} »
+          </div>
         ) : (
           <Table>
             <TableHeader>
@@ -100,7 +114,7 @@ const AdminUsers = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((u) => {
+              {filteredUsers.map((u) => {
                 const isAdmin = u.roles.includes("admin");
                 const isSelf = u.id === user?.id;
                 return (
