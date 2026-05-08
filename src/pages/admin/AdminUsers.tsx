@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Shield, ShieldOff, RefreshCw } from "lucide-react";
+import { Loader2, Shield, ShieldOff, RefreshCw, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 type AdminUser = {
   id: string;
@@ -20,6 +21,7 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -53,6 +55,15 @@ const AdminUsers = () => {
     load();
   };
 
+  const q = query.trim().toLowerCase();
+  const filteredUsers = q
+    ? users.filter(
+        (u) =>
+          (u.email ?? "").toLowerCase().includes(q) ||
+          u.id.toLowerCase().includes(q),
+      )
+    : users;
+
   const fmt = (d: string | null) =>
     d ? new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
 
@@ -70,6 +81,16 @@ const AdminUsers = () => {
         </Button>
       </div>
 
+      <div className="relative max-w-md">
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Rechercher par email ou ID…"
+          className="pl-9"
+        />
+      </div>
+
       <div className="rounded-lg border border-border bg-card">
         {loading ? (
           <div className="flex items-center justify-center p-12 text-muted-foreground">
@@ -77,6 +98,10 @@ const AdminUsers = () => {
           </div>
         ) : users.length === 0 ? (
           <div className="p-10 text-center text-sm text-muted-foreground">Aucun utilisateur</div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="p-10 text-center text-sm text-muted-foreground">
+            Aucun résultat pour « {query} »
+          </div>
         ) : (
           <Table>
             <TableHeader>
@@ -89,7 +114,7 @@ const AdminUsers = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((u) => {
+              {filteredUsers.map((u) => {
                 const isAdmin = u.roles.includes("admin");
                 const isSelf = u.id === user?.id;
                 return (
