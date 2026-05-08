@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Shield, ShieldOff, RefreshCw } from "lucide-react";
+import { Loader2, Shield, ShieldOff, RefreshCw, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 type AdminUser = {
   id: string;
@@ -20,6 +21,7 @@ const AdminUsers = () => {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -52,6 +54,15 @@ const AdminUsers = () => {
     toast.success(isAdmin ? "Droits admin retirés" : "Promu administrateur");
     load();
   };
+
+  const q = query.trim().toLowerCase();
+  const filteredUsers = q
+    ? users.filter(
+        (u) =>
+          (u.email ?? "").toLowerCase().includes(q) ||
+          u.id.toLowerCase().includes(q),
+      )
+    : users;
 
   const fmt = (d: string | null) =>
     d ? new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
