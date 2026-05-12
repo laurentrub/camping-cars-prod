@@ -16,6 +16,7 @@ import { SEO } from "@/components/SEO";
 import { formatPrice } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 
 const Reservation = () => {
   const { slug } = useParams();
