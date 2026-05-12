@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, Clock, FileText } from "lucide-react";
+import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,12 +11,13 @@ import { cn } from "@/lib/utils";
 import { formatPrice } from "@/lib/types";
 
 const STATUS_OPTS = [
-  { value: "en_attente_virement", label: "En attente virement", color: "bg-amber-100 text-amber-900" },
-  { value: "acompte_recu", label: "Acompte reçu", color: "bg-emerald-100 text-emerald-900" },
-  { value: "vente_finalisee", label: "Vente finalisée", color: "bg-blue-100 text-blue-900" },
+  { value: "demande_visite", label: "À traiter", color: "bg-amber-100 text-amber-900" },
+  { value: "visite_confirmee", label: "Visite confirmée", color: "bg-emerald-100 text-emerald-900" },
+  { value: "visite_realisee", label: "Visite réalisée", color: "bg-blue-100 text-blue-900" },
   { value: "annulee", label: "Annulée", color: "bg-zinc-200 text-zinc-700" },
-  { value: "expiree", label: "Expirée", color: "bg-red-100 text-red-900" },
 ];
+
+const slotLabel = (s: string | null) => s === "matin" ? "Matin" : s === "apres_midi" ? "Après-midi" : "—";
 
 const AdminReservations = () => {
   const [items, setItems] = useState<any[]>([]);
@@ -26,22 +29,23 @@ const AdminReservations = () => {
     const { data } = await supabase
       .from("reservations")
       .select("*, vehicles(id, title, slug, price, status)")
-      .order("created_at", { ascending: false });
+      .order("requested_visit_date", { ascending: true, nullsFirst: false });
     setItems(data ?? []);
   };
   useEffect(() => { load(); }, []);
 
-  const confirmDeposit = async (r: any) => {
-    const amountStr = prompt(`Montant reçu (€) ?`, String(r.deposit_amount));
-    if (!amountStr) return;
-    const amount = Number(amountStr);
-    if (!isFinite(amount) || amount <= 0) return toast.error("Montant invalide");
+  const confirmVisit = async (r: any) => {
     const { error } = await supabase.from("reservations")
-      .update({ status: "acompte_recu", deposit_received_at: new Date().toISOString(), deposit_received_amount: amount })
+      .update({ status: "visite_confirmee", confirmed_visit_at: new Date().toISOString() })
       .eq("id", r.id);
     if (error) return toast.error(error.message);
-    await supabase.from("vehicles").update({ status: "reserve", reserved_until: null }).eq("id", r.vehicle_id);
-    toast.success("Acompte confirmé, véhicule réservé.");
+    toast.success("Visite confirmée. Pensez à rappeler le client.");
+    load();
+  };
+
+  const markRealised = async (r: any) => {
+    if (!confirm("Marquer la visite comme réalisée ?")) return;
+    await supabase.from("reservations").update({ status: "visite_realisee" }).eq("id", r.id);
     load();
   };
 
@@ -52,17 +56,7 @@ const AdminReservations = () => {
       .update({ status: "annulee", cancelled_at: new Date().toISOString(), cancellation_reason: reason || null })
       .eq("id", r.id);
     if (error) return toast.error(error.message);
-    if (r.vehicles?.status === "pre_reserve" || r.vehicles?.status === "reserve") {
-      await supabase.from("vehicles").update({ status: "disponible", reserved_until: null }).eq("id", r.vehicle_id);
-    }
-    toast.success("Réservation annulée, véhicule remis en disponible.");
-    load();
-  };
-
-  const finalize = async (r: any) => {
-    if (!confirm("Marquer la vente comme finalisée ?")) return;
-    await supabase.from("reservations").update({ status: "vente_finalisee" }).eq("id", r.id);
-    await supabase.from("vehicles").update({ status: "vendu" }).eq("id", r.vehicle_id);
+    toast.success("Demande annulée.");
     load();
   };
 
@@ -74,7 +68,7 @@ const AdminReservations = () => {
   };
 
   const del = async (id: string) => {
-    if (!confirm("Supprimer cette réservation ? (le véhicule ne sera pas modifié)")) return;
+    if (!confirm("Supprimer définitivement cette demande ?")) return;
     await supabase.from("reservations").delete().eq("id", id);
     load();
   };
@@ -102,8 +96,8 @@ const AdminReservations = () => {
 
   return (
     <div>
-      <h1 className="font-serif text-3xl font-semibold">Réservations</h1>
-      <p className="mt-1 text-sm text-muted-foreground">{items.length} demande{items.length > 1 ? "s" : ""} de réservation au total.</p>
+      <h1 className="font-serif text-3xl font-semibold">Demandes de visite</h1>
+      <p className="mt-1 text-sm text-muted-foreground">{items.length} demande{items.length > 1 ? "s" : ""} au total. À valider après contact téléphonique.</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
         <button onClick={() => setFilter("all")} className={cn("rounded-full border px-3 py-1.5 text-xs font-medium", filter === "all" ? "border-accent bg-accent text-accent-foreground" : "border-border")}>
@@ -119,12 +113,15 @@ const AdminReservations = () => {
       <Input placeholder="Rechercher par référence, email, nom ou véhicule…" value={search} onChange={(e) => setSearch(e.target.value)} className="mt-4 max-w-md" />
 
       <div className="mt-6 space-y-3">
-        {filtered.length === 0 && <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Aucune réservation.</div>}
+        {filtered.length === 0 && <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Aucune demande.</div>}
         {filtered.map((r) => {
           const status = STATUS_OPTS.find((s) => s.value === r.status);
           const open = openId === r.id;
-          const isPending = r.status === "en_attente_virement";
-          const expired = isPending && new Date(r.expires_at) < new Date();
+          const isPending = r.status === "demande_visite";
+          const isConfirmed = r.status === "visite_confirmee";
+          const visitDate = r.requested_visit_date
+            ? format(new Date(r.requested_visit_date + "T00:00:00"), "EEE d MMM yyyy", { locale: fr })
+            : "—";
           return (
             <div key={r.id} className="rounded-xl border border-border bg-card p-5 shadow-soft">
               <div className="flex flex-wrap items-start justify-between gap-3">
@@ -132,26 +129,26 @@ const AdminReservations = () => {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-mono text-sm font-bold">{r.reference}</span>
                     <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider", status?.color)}>{status?.label}</span>
-                    {expired && <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-red-900">Délai dépassé</span>}
                   </div>
                   <h3 className="mt-1 font-serif text-lg font-semibold">{r.first_name} {r.last_name}</h3>
                   <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <a href={`mailto:${r.email}`} className="flex items-center gap-1 hover:text-accent"><Mail className="h-3 w-3" /> {r.email}</a>
                     {r.phone && <a href={`tel:${r.phone}`} className="flex items-center gap-1 hover:text-accent"><Phone className="h-3 w-3" /> {r.phone}</a>}
-                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> {new Date(r.created_at).toLocaleString("fr-FR")}</span>
-                    {isPending && <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> Expire le {new Date(r.expires_at).toLocaleDateString("fr-FR")}</span>}
+                    <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Reçu le {new Date(r.created_at).toLocaleDateString("fr-FR")}</span>
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {isPending && (
-                    <Button size="sm" variant="hero" onClick={() => confirmDeposit(r)}>
-                      <CheckCircle2 className="h-4 w-4" /> Virement reçu
+                    <Button size="sm" variant="hero" onClick={() => confirmVisit(r)}>
+                      <CheckCircle2 className="h-4 w-4" /> Valider la visite
                     </Button>
                   )}
-                  {r.status === "acompte_recu" && (
-                    <Button size="sm" variant="elegant" onClick={() => finalize(r)}>Finaliser la vente</Button>
+                  {isConfirmed && (
+                    <Button size="sm" variant="elegant" onClick={() => markRealised(r)}>
+                      <CalendarCheck className="h-4 w-4" /> Visite réalisée
+                    </Button>
                   )}
-                  {(isPending || r.status === "acompte_recu") && (
+                  {(isPending || isConfirmed) && (
                     <Button size="sm" variant="ghost" onClick={() => cancel(r)}>
                       <XCircle className="h-4 w-4 text-destructive" /> Annuler
                     </Button>
@@ -165,17 +162,16 @@ const AdminReservations = () => {
                 </div>
               </div>
 
-              {r.vehicles && (
-                <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+                <span className="rounded-md bg-accent/10 px-3 py-1 text-accent capitalize">
+                  Visite : <strong>{visitDate}</strong> — {slotLabel(r.requested_time_slot)}
+                </span>
+                {r.vehicles && (
                   <span className="rounded-md bg-secondary px-3 py-1">
                     Véhicule : <strong>{r.vehicles.title}</strong> — {formatPrice(Number(r.vehicles.price))}
                   </span>
-                  <span className="rounded-md bg-accent/10 px-3 py-1 text-accent">
-                    Acompte : <strong>{formatPrice(Number(r.deposit_amount))}</strong>
-                    {r.deposit_received_amount && ` (reçu ${formatPrice(Number(r.deposit_received_amount))})`}
-                  </span>
-                </div>
-              )}
+                )}
+              </div>
 
               {r.message && <p className="mt-3 whitespace-pre-line rounded-md bg-secondary/50 p-3 text-sm">{r.message}</p>}
 
