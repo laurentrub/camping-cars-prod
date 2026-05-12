@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus } from "lucide-react";
+import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus, Filter, X } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
