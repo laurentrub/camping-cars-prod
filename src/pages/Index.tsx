@@ -100,13 +100,33 @@ const Index = () => {
       {/* QUICK SEARCH */}
       <section className="container-prose -mt-16 relative z-20">
         <div className="rounded-2xl border border-border bg-card p-6 shadow-deep md:p-8">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="font-serif text-xl font-semibold">Trouvez votre camping-car idéal</h2>
             <Link to="/catalogue" className="hidden items-center gap-1 text-sm font-medium text-accent hover:underline md:inline-flex">
               Catalogue complet <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+
+          <form onSubmit={submitSearch} className="mt-5 flex flex-col gap-3 sm:flex-row" role="search" aria-label="Rechercher un camping-car">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Marque, modèle, mot-clé… (ex. Hymer, fourgon, intégral)"
+                className="h-12 pl-9 text-base"
+                aria-label="Rechercher par marque ou modèle"
+              />
+            </div>
+            <Button type="submit" variant="hero" size="lg" className="h-12 sm:w-auto">
+              <Search className="h-4 w-4" /> Rechercher
+            </Button>
+          </form>
+
+          <div className="mt-5 border-t border-border pt-5">
+            <div className="text-xs uppercase tracking-wider text-muted-foreground">Ou parcourez par type</div>
+            <div className="mt-3 grid gap-3 sm:grid-cols-3">
             <Link to="/catalogue?type=fourgon" className="group rounded-lg border border-border p-4 transition-smooth hover:border-accent hover:shadow-soft">
               <div className="text-xs uppercase tracking-wider text-muted-foreground">Compact</div>
               <div className="mt-1 font-serif text-lg font-semibold group-hover:text-accent">Fourgons</div>
