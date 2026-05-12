@@ -245,16 +245,24 @@ const Index = () => {
           <img src={showroom} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-15" />
           <div className="relative grid gap-10 md:grid-cols-2 md:items-center">
             <div>
-              <span className="eyebrow !text-accent">Prêt à partir ?</span>
+              <span className="eyebrow !text-accent">Passez nous voir</span>
               <h2 className="mt-3 font-serif text-3xl font-semibold text-primary-foreground md:text-4xl">
-                Parlons de votre projet
+                Réservez une visite au showroom
               </h2>
               <p className="mt-4 text-primary-foreground/80 max-w-md">
-                Que vous cherchiez votre premier camping-car ou que vous souhaitiez changer, notre équipe est à votre écoute.
+                Choisissez le véhicule qui vous intéresse dans notre catalogue, puis sélectionnez un créneau. Un conseiller vous rappelle pour confirmer le rendez-vous selon les disponibilités du garage.
               </p>
             </div>
             <div className="rounded-xl bg-card p-6 shadow-deep md:p-8">
-              <LeadForm compact title="Être rappelé" subtitle="Réponse sous 24h ouvrées" type="rappel" />
+              <h3 className="font-serif text-xl font-semibold">Comment ça marche</h3>
+              <ol className="mt-4 space-y-3 text-sm text-foreground">
+                <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">1</span>Choisissez un véhicule dans le catalogue</li>
+                <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">2</span>Proposez une date et un créneau</li>
+                <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">3</span>Nous confirmons par téléphone</li>
+              </ol>
+              <Button asChild variant="hero" size="lg" className="mt-6 w-full">
+                <Link to="/catalogue">Voir le catalogue <ArrowRight className="h-4 w-4" /></Link>
+              </Button>
             </div>
           </div>
         </div>
