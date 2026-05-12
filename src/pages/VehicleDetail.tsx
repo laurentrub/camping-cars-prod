@@ -168,15 +168,19 @@ const VehicleDetail = () => {
             )}
           </div>
 
-          <aside id="contact" className="rounded-xl border border-border bg-card p-6 shadow-soft lg:sticky lg:top-24 lg:h-fit">
-            <LeadForm
-              compact
-              type="vehicule"
-              vehicleId={vehicle.id}
-              title="Intéressé par ce véhicule ?"
-              subtitle="Un conseiller vous répond sous 24h"
-              defaultMessage={`Bonjour, je suis intéressé(e) par le ${vehicle.title} (${formatPrice(vehicle.price)}).`}
-            />
+          <aside className="rounded-xl border border-accent/30 bg-accent-soft/40 p-6 shadow-soft lg:sticky lg:top-24 lg:h-fit">
+            <h3 className="font-serif text-xl font-semibold">Intéressé par ce véhicule&nbsp;?</h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Réservez un créneau pour le voir au showroom. Nous vous rappelons pour confirmer le rendez-vous.
+            </p>
+            {vehicle.status !== "vendu" && (
+              <Button asChild variant="hero" size="lg" className="mt-5 w-full">
+                <Link to={`/reserver/${vehicle.slug}`}>Réserver une visite</Link>
+              </Button>
+            )}
+            <a href="tel:+33123456789" className="mt-4 block text-center text-sm font-semibold text-foreground hover:text-accent">
+              ou appelez-nous au 01 23 45 67 89
+            </a>
           </aside>
         </div>
       </section>
