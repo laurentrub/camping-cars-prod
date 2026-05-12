@@ -103,6 +103,47 @@ export type Database = {
           },
         ]
       }
+      reservation_events: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          event_type: string
+          from_status: string | null
+          id: string
+          note: string | null
+          reservation_id: string
+          to_status: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          event_type: string
+          from_status?: string | null
+          id?: string
+          note?: string | null
+          reservation_id: string
+          to_status?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          event_type?: string
+          from_status?: string | null
+          id?: string
+          note?: string | null
+          reservation_id?: string
+          to_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservation_events_reservation_id_fkey"
+            columns: ["reservation_id"]
+            isOneToOne: false
+            referencedRelation: "reservations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       reservations: {
         Row: {
           admin_notes: string | null
@@ -390,6 +431,8 @@ export type Database = {
         | "demande_visite"
         | "visite_confirmee"
         | "visite_realisee"
+        | "contact_effectue"
+        | "en_attente_client"
       trade_in_condition: "excellent" | "bon" | "moyen" | "a_renover"
       trade_in_status: "nouveau" | "en_cours" | "estime" | "refuse" | "archive"
       vehicle_condition: "neuf" | "occasion"
@@ -534,6 +577,8 @@ export const Constants = {
         "demande_visite",
         "visite_confirmee",
         "visite_realisee",
+        "contact_effectue",
+        "en_attente_client",
       ],
       trade_in_condition: ["excellent", "bon", "moyen", "a_renover"],
       trade_in_status: ["nouveau", "en_cours", "estime", "refuse", "archive"],
