@@ -142,6 +142,7 @@ const Index = () => {
               <div className="mt-1 font-serif text-lg font-semibold group-hover:text-accent">Intégraux</div>
               <div className="mt-1 text-xs text-muted-foreground">À partir de 75 000 €</div>
             </Link>
+            </div>
           </div>
         </div>
       </section>
