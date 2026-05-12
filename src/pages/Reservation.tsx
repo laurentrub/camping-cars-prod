@@ -16,6 +16,7 @@ import { SEO } from "@/components/SEO";
 import { formatPrice } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 
 const Reservation = () => {
   const { slug } = useParams();
@@ -37,14 +38,24 @@ const Reservation = () => {
     e.preventDefault();
     if (!available) return;
     if (!date) return toast.error("Veuillez choisir une date de visite");
-    setSubmitting(true);
     const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email") ?? "").trim();
+    const phone = String(fd.get("phone") ?? "").trim();
+    const confirmErr = validateConfirmedContact({
+      email,
+      emailConfirm: String(fd.get("email_confirm") ?? "").trim(),
+      phone,
+      phoneConfirm: String(fd.get("phone_confirm") ?? "").trim(),
+      phoneRequired: true,
+    });
+    if (confirmErr) return toast.error(confirmErr);
+    setSubmitting(true);
     const payload = {
       vehicle_id: vehicle.id,
       first_name: String(fd.get("first_name") ?? "").trim(),
       last_name: String(fd.get("last_name") ?? "").trim(),
-      email: String(fd.get("email") ?? "").trim(),
-      phone: String(fd.get("phone") ?? "").trim() || null,
+      email,
+      phone: phone || null,
       message: String(fd.get("message") ?? "").trim() || null,
       requested_visit_date: format(date, "yyyy-MM-dd"),
       requested_time_slot: slot,
@@ -101,8 +112,16 @@ const Reservation = () => {
                   <Input id="email" name="email" type="email" required maxLength={255} />
                 </div>
                 <div>
+                  <Label htmlFor="email_confirm">Confirmation email *</Label>
+                  <Input id="email_confirm" name="email_confirm" type="email" required maxLength={255} {...noPasteProps} />
+                </div>
+                <div>
                   <Label htmlFor="phone">Téléphone *</Label>
                   <Input id="phone" name="phone" type="tel" required maxLength={30} />
+                </div>
+                <div>
+                  <Label htmlFor="phone_confirm">Confirmation téléphone *</Label>
+                  <Input id="phone_confirm" name="phone_confirm" type="tel" required maxLength={30} {...noPasteProps} />
                 </div>
               </div>
 

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Send, CheckCircle2 } from "lucide-react";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 
 const leadSchema = z.object({
   first_name: z.string().trim().min(1, "Prénom requis").max(100),
@@ -41,6 +42,13 @@ export function LeadForm({ type = "contact", vehicleId, defaultMessage, compact,
       phone: String(fd.get("phone") ?? ""),
       message: String(fd.get("message") ?? ""),
     };
+    const confirmErr = validateConfirmedContact({
+      email: data.email,
+      emailConfirm: String(fd.get("email_confirm") ?? ""),
+      phone: data.phone,
+      phoneConfirm: String(fd.get("phone_confirm") ?? ""),
+    });
+    if (confirmErr) { toast.error(confirmErr); return; }
     const parsed = leadSchema.safeParse(data);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Formulaire invalide");
@@ -101,8 +109,18 @@ export function LeadForm({ type = "contact", vehicleId, defaultMessage, compact,
           <Input id="email" name="email" type="email" required maxLength={255} />
         </div>
         <div className="space-y-1.5">
+          <Label htmlFor="email_confirm">Confirmation email *</Label>
+          <Input id="email_confirm" name="email_confirm" type="email" required maxLength={255} {...noPasteProps} />
+        </div>
+      </div>
+      <div className={compact ? "space-y-4" : "grid gap-4 sm:grid-cols-2"}>
+        <div className="space-y-1.5">
           <Label htmlFor="phone">Téléphone</Label>
           <Input id="phone" name="phone" type="tel" maxLength={30} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="phone_confirm">Confirmation téléphone</Label>
+          <Input id="phone_confirm" name="phone_confirm" type="tel" maxLength={30} {...noPasteProps} />
         </div>
       </div>
       <div className="space-y-1.5">

@@ -26,6 +26,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { formatPrice } from "@/lib/types";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 import showroom from "@/assets/showroom.jpg";
 
 const tradeInSchema = z.object({
@@ -153,6 +154,14 @@ const Reprise = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const confirmErr = validateConfirmedContact({
+      email: String(fd.get("email") ?? ""),
+      emailConfirm: String(fd.get("email_confirm") ?? ""),
+      phone: String(fd.get("phone") ?? ""),
+      phoneConfirm: String(fd.get("phone_confirm") ?? ""),
+    });
+    if (confirmErr) { toast.error(confirmErr); return; }
     const parsed = collectFormData(e.currentTarget);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Formulaire incomplet");
@@ -455,8 +464,16 @@ const Reprise = () => {
                   <Input id="email" name="email" type="email" required maxLength={255} />
                 </div>
                 <div className="space-y-1.5">
+                  <Label htmlFor="email_confirm">Confirmation email *</Label>
+                  <Input id="email_confirm" name="email_confirm" type="email" required maxLength={255} {...noPasteProps} />
+                </div>
+                <div className="space-y-1.5">
                   <Label htmlFor="phone">Téléphone</Label>
                   <Input id="phone" name="phone" type="tel" maxLength={30} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="phone_confirm">Confirmation téléphone</Label>
+                  <Input id="phone_confirm" name="phone_confirm" type="tel" maxLength={30} {...noPasteProps} />
                 </div>
               </div>
             </fieldset>
