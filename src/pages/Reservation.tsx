@@ -1,43 +1,42 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, CalendarIcon, Loader2 } from "lucide-react";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
 import { supabase } from "@/integrations/supabase/client";
 import { useVehicle } from "@/hooks/useVehicles";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SEO } from "@/components/SEO";
 import { formatPrice } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 const Reservation = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const { vehicle, loading } = useVehicle(slug);
-  const [defaultDeposit, setDefaultDeposit] = useState<number>(1000);
-  const [holdDays, setHoldDays] = useState<number>(7);
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    supabase.from("bank_settings").select("default_deposit_amount, hold_days").eq("singleton", true).maybeSingle()
-      .then(({ data }) => {
-        if (data) {
-          setDefaultDeposit(Number(data.default_deposit_amount));
-          setHoldDays(Number(data.hold_days));
-        }
-      });
-  }, []);
+  const [date, setDate] = useState<Date | undefined>();
+  const [slot, setSlot] = useState<string>("matin");
 
   if (loading) return <div className="container-prose py-20"><Loader2 className="mx-auto h-6 w-6 animate-spin" /></div>;
   if (!vehicle) return <div className="container-prose py-20 text-center">Véhicule introuvable.</div>;
 
-  const deposit = vehicle.deposit_override ?? defaultDeposit;
-  const available = vehicle.status === "disponible";
+  const available = vehicle.status !== "vendu";
+
+  const minDate = new Date(); minDate.setHours(0, 0, 0, 0);
+  const maxDate = new Date(minDate.getTime() + 180 * 86400000);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!available) return;
+    if (!date) return toast.error("Veuillez choisir une date de visite");
     setSubmitting(true);
     const fd = new FormData(e.currentTarget);
     const payload = {
@@ -47,11 +46,13 @@ const Reservation = () => {
       email: String(fd.get("email") ?? "").trim(),
       phone: String(fd.get("phone") ?? "").trim() || null,
       message: String(fd.get("message") ?? "").trim() || null,
+      requested_visit_date: format(date, "yyyy-MM-dd"),
+      requested_time_slot: slot,
     };
     const { data, error } = await supabase.functions.invoke("create-reservation", { body: payload });
     setSubmitting(false);
     if (error || !data?.reservation) {
-      toast.error((data as any)?.error || error?.message || "Erreur lors de la réservation");
+      toast.error((data as any)?.error || error?.message || "Erreur lors de la demande");
       return;
     }
     navigate(`/reservation/${data.reservation.reference}`);
@@ -59,7 +60,7 @@ const Reservation = () => {
 
   return (
     <>
-      <SEO title={`Réserver ${vehicle.title} | Horizon Évasion`} description={`Réservez ${vehicle.title} avec un acompte de ${formatPrice(deposit)} par virement bancaire.`} />
+      <SEO title={`Réserver une visite — ${vehicle.title} | Horizon Évasion`} description={`Réservez une visite pour ${vehicle.title}. Demande sous réserve de validation par notre équipe.`} />
       <section className="border-b border-border bg-secondary/40 py-6">
         <div className="container-prose">
           <Link to={`/vehicule/${vehicle.slug}`} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-accent">
@@ -71,18 +72,19 @@ const Reservation = () => {
       <section className="container-prose py-10">
         <div className="grid gap-10 lg:grid-cols-[1fr,400px]">
           <div>
-            <h1 className="font-serif text-3xl font-semibold">Réserver ce véhicule</h1>
+            <h1 className="font-serif text-3xl font-semibold">Réserver une visite</h1>
             <p className="mt-2 text-muted-foreground">
-              La réservation est confirmée par un virement bancaire d'acompte. Renseignez vos coordonnées : nous vous enverrons par email les instructions de virement et une référence unique à indiquer en libellé.
+              Choisissez la date et le créneau qui vous conviennent. Votre demande est <strong>sous réserve de validation</strong> :
+              nous vous appellerons pour confirmer le rendez-vous selon la disponibilité du garage.
             </p>
 
             {!available && (
               <div className="mt-6 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
-                Ce véhicule n'est plus disponible à la réservation.
+                Ce véhicule a été vendu et n'est plus visitable.
               </div>
             )}
 
-            <form onSubmit={onSubmit} className="mt-8 space-y-4">
+            <form onSubmit={onSubmit} className="mt-8 space-y-5">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="first_name">Prénom *</Label>
@@ -99,19 +101,63 @@ const Reservation = () => {
                   <Input id="email" name="email" type="email" required maxLength={255} />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input id="phone" name="phone" type="tel" maxLength={30} />
+                  <Label htmlFor="phone">Téléphone *</Label>
+                  <Input id="phone" name="phone" type="tel" required maxLength={30} />
                 </div>
               </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col">
+                  <Label className="mb-2">Date souhaitée *</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className={cn("justify-start text-left font-normal", !date && "text-muted-foreground")}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {date ? format(date, "EEEE d MMMM yyyy", { locale: fr }) : "Choisir une date"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        disabled={(d) => d < minDate || d > maxDate || d.getDay() === 0}
+                        initialFocus
+                        locale={fr}
+                        className={cn("p-3 pointer-events-auto")}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <p className="mt-1 text-xs text-muted-foreground">Dimanche fermé. Jusqu'à 6 mois à l'avance.</p>
+                </div>
+
+                <div>
+                  <Label className="mb-2 block">Créneau *</Label>
+                  <RadioGroup value={slot} onValueChange={setSlot} className="grid grid-cols-2 gap-2">
+                    <label className={cn("flex cursor-pointer items-center gap-2 rounded-md border border-border p-3 text-sm", slot === "matin" && "border-accent bg-accent/5")}>
+                      <RadioGroupItem value="matin" /> Matin
+                    </label>
+                    <label className={cn("flex cursor-pointer items-center gap-2 rounded-md border border-border p-3 text-sm", slot === "apres_midi" && "border-accent bg-accent/5")}>
+                      <RadioGroupItem value="apres_midi" /> Après-midi
+                    </label>
+                  </RadioGroup>
+                </div>
+              </div>
+
               <div>
                 <Label htmlFor="message">Message (optionnel)</Label>
-                <Textarea id="message" name="message" rows={3} maxLength={2000} placeholder="Précisions, questions, demande de livraison…" />
+                <Textarea id="message" name="message" rows={3} maxLength={2000} placeholder="Précisions, questions, contraintes d'horaire…" />
               </div>
+
               <Button type="submit" variant="hero" size="lg" disabled={!available || submitting} className="w-full">
-                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : `Confirmer ma demande — acompte ${formatPrice(deposit)}`}
+                {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Envoyer ma demande de visite"}
               </Button>
               <p className="text-xs text-muted-foreground">
-                En validant, vous pré-réservez ce véhicule. Vous recevrez par email les coordonnées bancaires et la référence à utiliser. Le véhicule reste pré-réservé pendant {holdDays} jours en attente du virement.
+                En validant, vous envoyez une demande. Un conseiller vous contactera par téléphone pour confirmer le rendez-vous selon la disponibilité du garage.
               </p>
             </form>
           </div>
@@ -124,8 +170,7 @@ const Reservation = () => {
             )}
             <dl className="mt-5 space-y-2 text-sm">
               <div className="flex justify-between"><dt className="text-muted-foreground">Prix TTC</dt><dd className="font-medium">{formatPrice(vehicle.price)}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted-foreground">Acompte demandé</dt><dd className="font-semibold text-accent">{formatPrice(deposit)}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted-foreground">Durée pré-réservation</dt><dd>{holdDays} jours</dd></div>
+              <div className="flex justify-between"><dt className="text-muted-foreground">Visite</dt><dd className="font-semibold text-accent">Gratuite & sans engagement</dd></div>
             </dl>
           </aside>
         </div>
