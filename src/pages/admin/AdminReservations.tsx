@@ -30,6 +30,12 @@ const AdminReservations = () => {
   const [openId, setOpenId] = useState<string | null>(null);
   const [eventsByRes, setEventsByRes] = useState<Record<string, any[]>>({});
   const [noteDraft, setNoteDraft] = useState<Record<string, string>>({});
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [createdFrom, setCreatedFrom] = useState("");
+  const [createdTo, setCreatedTo] = useState("");
+  const [visitFrom, setVisitFrom] = useState("");
+  const [visitTo, setVisitTo] = useState("");
+  const [slotFilter, setSlotFilter] = useState<string>("all");
 
   const load = async () => {
     const { data } = await supabase
