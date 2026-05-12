@@ -73,7 +73,7 @@ const AdminReservations = () => {
     });
     if (evErr) return toast.error(evErr.message);
     if (r.status === "demande_visite") {
-      await supabase.from("reservations").update({ status: "contact_effectue" }).eq("id", r.id);
+      await supabase.from("reservations").update({ status: "contact_effectue" as any }).eq("id", r.id);
     }
     toast.success("Contact enregistré");
     load();
