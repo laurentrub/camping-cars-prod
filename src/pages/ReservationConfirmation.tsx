@@ -76,7 +76,7 @@ const ReservationConfirmation = () => {
 
   return (
     <>
-      <SEO title={`Réservation ${res.reference} | Horizon Évasion`} />
+      <SEO title={`Réservation ${res.reference} | Horizon Évasion`} description={`Confirmation de pré-réservation ${res.reference}. Instructions de virement bancaire pour valider l'acompte.`} />
       <section className="container-prose py-12">
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center justify-center">
