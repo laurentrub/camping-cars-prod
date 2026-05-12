@@ -199,7 +199,7 @@ const AdminReservations = () => {
           await Promise.all(
             snapshots.map(async (snap) => {
               const { id, ...rest } = snap;
-              const { error } = await supabase.from("reservations").update(rest).eq("id", id);
+              const { error } = await supabase.from("reservations").update(rest as any).eq("id", id);
               if (error) errors.push(error.message);
             })
           );
@@ -267,7 +267,7 @@ const AdminReservations = () => {
           await Promise.all(
             snapshots.map(async (snap) => {
               const { id, ...rest } = snap;
-              await supabase.from("reservations").update(rest).eq("id", id);
+              await supabase.from("reservations").update(rest as any).eq("id", id);
             })
           );
           toast.success("Action en lot annulée");
