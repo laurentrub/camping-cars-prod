@@ -26,6 +26,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { formatPrice } from "@/lib/types";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 import showroom from "@/assets/showroom.jpg";
 
 const tradeInSchema = z.object({
