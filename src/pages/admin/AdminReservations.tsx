@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus, Filter, X } from "lucide-react";
+import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus, Filter, X, CheckSquare, Square } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,8 @@ const AdminReservations = () => {
   const [visitFrom, setVisitFrom] = useState("");
   const [visitTo, setVisitTo] = useState("");
   const [slotFilter, setSlotFilter] = useState<string>("all");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const load = async () => {
     const { data } = await supabase
@@ -167,6 +169,73 @@ const AdminReservations = () => {
     setSlotFilter("all"); setCreatedFrom(""); setCreatedTo(""); setVisitFrom(""); setVisitTo("");
   };
 
+  const toggleSelect = (id: string) => {
+    setSelected((s) => {
+      const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n;
+    });
+  };
+  const filteredIds = useMemo(() => filtered.map((r) => r.id), [filtered]);
+  const allSelected = filteredIds.length > 0 && filteredIds.every((id) => selected.has(id));
+  const toggleSelectAll = () => {
+    setSelected((s) => {
+      if (allSelected) {
+        const n = new Set(s); filteredIds.forEach((id) => n.delete(id)); return n;
+      }
+      const n = new Set(s); filteredIds.forEach((id) => n.add(id)); return n;
+    });
+  };
+  const clearSelection = () => setSelected(new Set());
+
+  const bulkUpdateStatus = async (status: string, extra: Record<string, any> = {}) => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    if (!confirm(`Appliquer le statut « ${statusLabel(status)} » à ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    setBulkBusy(true);
+    const { error } = await supabase.from("reservations").update({ status: status as any, ...extra }).in("id", ids);
+    setBulkBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success(`${ids.length} demande${ids.length > 1 ? "s" : ""} mise${ids.length > 1 ? "s" : ""} à jour`);
+    clearSelection();
+    load();
+  };
+
+  const bulkLogContact = async () => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    const note = prompt(`Résumé d'appel appliqué à ${ids.length} demande(s) (optionnel) :`, "") ?? "";
+    setBulkBusy(true);
+    const events = ids.map((reservation_id) => ({
+      reservation_id,
+      event_type: "phone_contact",
+      note: note || "Contact téléphonique effectué (action en lot)",
+    }));
+    const { error: evErr } = await supabase.from("reservation_events").insert(events);
+    if (evErr) { setBulkBusy(false); return toast.error(evErr.message); }
+    const toUpdate = items.filter((r) => ids.includes(r.id) && r.status === "demande_visite").map((r) => r.id);
+    if (toUpdate.length > 0) {
+      await supabase.from("reservations").update({ status: "contact_effectue" as any }).in("id", toUpdate);
+    }
+    setBulkBusy(false);
+    toast.success(`Contact enregistré pour ${ids.length} demande${ids.length > 1 ? "s" : ""}`);
+    clearSelection();
+    load();
+  };
+
+  const bulkDelete = async () => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    if (!confirm(`Supprimer définitivement ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    setBulkBusy(true);
+    const { error } = await supabase.from("reservations").delete().in("id", ids);
+    setBulkBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Suppression effectuée");
+    clearSelection();
+    load();
+  };
+
+  const selectedCount = filteredIds.filter((id) => selected.has(id)).length;
+
   return (
     <div>
       <h1 className="font-serif text-3xl font-semibold">Demandes de visite</h1>
@@ -234,7 +303,43 @@ const AdminReservations = () => {
         </div>
       )}
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3">
+        <Button size="sm" variant="ghost" onClick={toggleSelectAll} disabled={filteredIds.length === 0}>
+          {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+          {allSelected ? "Tout désélectionner" : "Tout sélectionner"}
+        </Button>
+        <span className="text-xs text-muted-foreground">
+          {selectedCount > 0 ? `${selectedCount} sélectionnée${selectedCount > 1 ? "s" : ""}` : "Aucune sélection"}
+        </span>
+        {selectedCount > 0 && (
+          <>
+            <span className="mx-1 h-5 w-px bg-border" />
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={bulkLogContact}>
+              <PhoneCall className="h-4 w-4" /> Contact effectué
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("en_attente_client")}>
+              <Clock className="h-4 w-4" /> Attente client
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("visite_confirmee", { confirmed_visit_at: new Date().toISOString() })}>
+              <CheckCircle2 className="h-4 w-4" /> Valider la visite
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("visite_realisee")}>
+              <CalendarCheck className="h-4 w-4" /> Visite réalisée
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("annulee", { cancelled_at: new Date().toISOString() })}>
+              <XCircle className="h-4 w-4 text-destructive" /> Annuler
+            </Button>
+            <Button size="sm" variant="ghost" disabled={bulkBusy} onClick={bulkDelete}>
+              <Trash2 className="h-4 w-4 text-destructive" /> Supprimer
+            </Button>
+            <Button size="sm" variant="ghost" onClick={clearSelection}>
+              <X className="h-4 w-4" /> Effacer
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div className="mt-3 space-y-3">
         {filtered.length === 0 && <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Aucune demande.</div>}
         {filtered.map((r) => {
           const status = STATUS_OPTS.find((s) => s.value === r.status);
@@ -248,10 +353,19 @@ const AdminReservations = () => {
             ? format(new Date(r.requested_visit_date + "T00:00:00"), "EEE d MMM yyyy", { locale: fr })
             : "—";
           const events = eventsByRes[r.id] ?? [];
+          const isSelected = selected.has(r.id);
           return (
-            <div key={r.id} className="rounded-xl border border-border bg-card p-5 shadow-soft">
+            <div key={r.id} className={cn("rounded-xl border bg-card p-5 shadow-soft", isSelected ? "border-accent ring-1 ring-accent" : "border-border")}>
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => toggleSelect(r.id)}
+                    className="mt-1 h-4 w-4 cursor-pointer accent-accent"
+                    aria-label={`Sélectionner ${r.reference}`}
+                  />
+                  <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-mono text-sm font-bold">{r.reference}</span>
                     <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider", status?.color)}>{status?.label}</span>
@@ -261,6 +375,7 @@ const AdminReservations = () => {
                     <a href={`mailto:${r.email}`} className="flex items-center gap-1 hover:text-accent"><Mail className="h-3 w-3" /> {r.email}</a>
                     {r.phone && <a href={`tel:${r.phone}`} className="flex items-center gap-1 hover:text-accent"><Phone className="h-3 w-3" /> {r.phone}</a>}
                     <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Reçu le {new Date(r.created_at).toLocaleDateString("fr-FR")}</span>
+                  </div>
                   </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
