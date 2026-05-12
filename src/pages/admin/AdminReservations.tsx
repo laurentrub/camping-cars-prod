@@ -57,7 +57,7 @@ const AdminReservations = () => {
   };
 
   const updateStatus = async (r: any, status: string, extra: Record<string, any> = {}) => {
-    const { error } = await supabase.from("reservations").update({ status, ...extra }).eq("id", r.id);
+    const { error } = await supabase.from("reservations").update({ status: status as any, ...extra }).eq("id", r.id);
     if (error) return toast.error(error.message);
     toast.success("Statut mis à jour");
     load();
