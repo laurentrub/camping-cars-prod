@@ -4,7 +4,7 @@ import { ArrowLeft, Calendar, Gauge, Users, BedDouble, Fuel, Settings, Zap, Rule
 import { SEO } from "@/components/SEO";
 import { useVehicle } from "@/hooks/useVehicles";
 import { Button } from "@/components/ui/button";
-import { LeadForm } from "@/components/LeadForm";
+
 import { TYPE_LABELS, STATUS_LABELS, formatPrice, formatMileage } from "@/lib/types";
 
 const VehicleDetail = () => {
