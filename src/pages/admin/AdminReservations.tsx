@@ -376,6 +376,7 @@ const AdminReservations = () => {
                     {r.phone && <a href={`tel:${r.phone}`} className="flex items-center gap-1 hover:text-accent"><Phone className="h-3 w-3" /> {r.phone}</a>}
                     <span className="flex items-center gap-1"><Calendar className="h-3 w-3" /> Reçu le {new Date(r.created_at).toLocaleDateString("fr-FR")}</span>
                   </div>
+                  </div>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
                   {!isFinal && (
