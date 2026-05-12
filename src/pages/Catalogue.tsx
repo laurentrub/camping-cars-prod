@@ -17,8 +17,9 @@ const Catalogue = () => {
   const [params, setParams] = useSearchParams();
 
   const initialType = (params.get("type") as VehicleType | null) ?? null;
+  const initialQuery = params.get("q") ?? "";
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(initialQuery);
   const [type, setType] = useState<VehicleType | null>(initialType);
   const [condition, setCondition] = useState<VehicleCondition | null>(null);
   const [maxPrice, setMaxPrice] = useState<number>(150000);
