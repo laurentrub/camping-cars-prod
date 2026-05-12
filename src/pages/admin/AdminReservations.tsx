@@ -186,17 +186,52 @@ const AdminReservations = () => {
   };
   const clearSelection = () => setSelected(new Set());
 
+  const UNDO_FIELDS = ["status", "confirmed_visit_at", "cancelled_at", "cancellation_reason"] as const;
+
+  const offerUndo = (label: string, snapshots: Array<Record<string, any>>) => {
+    if (snapshots.length === 0) return;
+    toast.success(label, {
+      duration: 10000,
+      action: {
+        label: "Annuler",
+        onClick: async () => {
+          const errors: string[] = [];
+          await Promise.all(
+            snapshots.map(async (snap) => {
+              const { id, ...rest } = snap;
+              const { error } = await supabase.from("reservations").update(rest as any).eq("id", id);
+              if (error) errors.push(error.message);
+            })
+          );
+          if (errors.length > 0) toast.error(`Restauration partielle : ${errors[0]}`);
+          else toast.success(`Restauration de ${snapshots.length} demande${snapshots.length > 1 ? "s" : ""}`);
+          load();
+        },
+      },
+    });
+  };
+
+  const snapshotFor = (ids: string[]) =>
+    items
+      .filter((r) => ids.includes(r.id))
+      .map((r) => {
+        const snap: Record<string, any> = { id: r.id };
+        UNDO_FIELDS.forEach((f) => { snap[f] = r[f] ?? null; });
+        return snap;
+      });
+
   const bulkUpdateStatus = async (status: string, extra: Record<string, any> = {}) => {
     const ids = filteredIds.filter((id) => selected.has(id));
     if (ids.length === 0) return;
     if (!confirm(`Appliquer le statut « ${statusLabel(status)} » à ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    const snapshots = snapshotFor(ids);
     setBulkBusy(true);
     const { error } = await supabase.from("reservations").update({ status: status as any, ...extra }).in("id", ids);
     setBulkBusy(false);
     if (error) return toast.error(error.message);
-    toast.success(`${ids.length} demande${ids.length > 1 ? "s" : ""} mise${ids.length > 1 ? "s" : ""} à jour`);
     clearSelection();
     load();
+    offerUndo(`${ids.length} demande${ids.length > 1 ? "s" : ""} mise${ids.length > 1 ? "s" : ""} à jour`, snapshots);
   };
 
   const bulkLogContact = async () => {
@@ -209,22 +244,43 @@ const AdminReservations = () => {
       event_type: "phone_contact",
       note: note || "Contact téléphonique effectué (action en lot)",
     }));
-    const { error: evErr } = await supabase.from("reservation_events").insert(events);
+    const { data: insertedEvents, error: evErr } = await supabase
+      .from("reservation_events")
+      .insert(events)
+      .select("id");
     if (evErr) { setBulkBusy(false); return toast.error(evErr.message); }
     const toUpdate = items.filter((r) => ids.includes(r.id) && r.status === "demande_visite").map((r) => r.id);
+    const snapshots = snapshotFor(toUpdate);
     if (toUpdate.length > 0) {
       await supabase.from("reservations").update({ status: "contact_effectue" as any }).in("id", toUpdate);
     }
     setBulkBusy(false);
-    toast.success(`Contact enregistré pour ${ids.length} demande${ids.length > 1 ? "s" : ""}`);
     clearSelection();
     load();
+    const eventIds = (insertedEvents ?? []).map((e: any) => e.id);
+    toast.success(`Contact enregistré pour ${ids.length} demande${ids.length > 1 ? "s" : ""}`, {
+      duration: 10000,
+      action: {
+        label: "Annuler",
+        onClick: async () => {
+          if (eventIds.length > 0) await supabase.from("reservation_events").delete().in("id", eventIds);
+          await Promise.all(
+            snapshots.map(async (snap) => {
+              const { id, ...rest } = snap;
+              await supabase.from("reservations").update(rest as any).eq("id", id);
+            })
+          );
+          toast.success("Action en lot annulée");
+          load();
+        },
+      },
+    });
   };
 
   const bulkDelete = async () => {
     const ids = filteredIds.filter((id) => selected.has(id));
     if (ids.length === 0) return;
-    if (!confirm(`Supprimer définitivement ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    if (!confirm(`Supprimer définitivement ${ids.length} demande${ids.length > 1 ? "s" : ""} ?\n\nAttention : cette action est irréversible (pas d'annulation possible).`)) return;
     setBulkBusy(true);
     const { error } = await supabase.from("reservations").delete().in("id", ids);
     setBulkBusy(false);
