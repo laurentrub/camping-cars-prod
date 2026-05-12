@@ -38,14 +38,24 @@ const Reservation = () => {
     e.preventDefault();
     if (!available) return;
     if (!date) return toast.error("Veuillez choisir une date de visite");
-    setSubmitting(true);
     const fd = new FormData(e.currentTarget);
+    const email = String(fd.get("email") ?? "").trim();
+    const phone = String(fd.get("phone") ?? "").trim();
+    const confirmErr = validateConfirmedContact({
+      email,
+      emailConfirm: String(fd.get("email_confirm") ?? "").trim(),
+      phone,
+      phoneConfirm: String(fd.get("phone_confirm") ?? "").trim(),
+      phoneRequired: true,
+    });
+    if (confirmErr) return toast.error(confirmErr);
+    setSubmitting(true);
     const payload = {
       vehicle_id: vehicle.id,
       first_name: String(fd.get("first_name") ?? "").trim(),
       last_name: String(fd.get("last_name") ?? "").trim(),
-      email: String(fd.get("email") ?? "").trim(),
-      phone: String(fd.get("phone") ?? "").trim() || null,
+      email,
+      phone: phone || null,
       message: String(fd.get("message") ?? "").trim() || null,
       requested_visit_date: format(date, "yyyy-MM-dd"),
       requested_time_slot: slot,
