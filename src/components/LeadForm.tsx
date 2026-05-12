@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Send, CheckCircle2 } from "lucide-react";
+import { validateConfirmedContact, noPasteProps } from "@/lib/contactValidation";
 
 const leadSchema = z.object({
   first_name: z.string().trim().min(1, "Prénom requis").max(100),
