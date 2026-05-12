@@ -1,6 +1,6 @@
 export type VehicleType = 'profile' | 'integral' | 'fourgon' | 'capucine';
 export type VehicleCondition = 'neuf' | 'occasion';
-export type VehicleStatus = 'disponible' | 'reserve' | 'vendu';
+export type VehicleStatus = 'disponible' | 'pre_reserve' | 'reserve' | 'vendu';
 
 export interface Vehicle {
   id: string;
@@ -26,6 +26,8 @@ export interface Vehicle {
   images: string[];
   cover_image: string | null;
   is_featured: boolean;
+  deposit_override: number | null;
+  reserved_until: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -39,6 +41,7 @@ export const TYPE_LABELS: Record<VehicleType, string> = {
 
 export const STATUS_LABELS: Record<VehicleStatus, string> = {
   disponible: 'Disponible',
+  pre_reserve: 'Pré-réservé',
   reserve: 'Réservé',
   vendu: 'Vendu',
 };

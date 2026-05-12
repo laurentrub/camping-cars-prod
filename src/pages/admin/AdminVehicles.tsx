@@ -26,7 +26,8 @@ const empty = {
   price: 50000,
   type: "profile" as "profile"|"integral"|"fourgon"|"capucine",
   condition: "occasion" as "neuf"|"occasion",
-  status: "disponible" as "disponible"|"reserve"|"vendu",
+  status: "disponible" as "disponible"|"pre_reserve"|"reserve"|"vendu",
+  deposit_override: "" as string | number,
   seats: 4,
   beds: 4,
   mileage: 0,
@@ -83,6 +84,7 @@ const AdminVehicles = () => {
       features: form.features.split(",").map((s) => s.trim()).filter(Boolean),
       cover_image: form.cover_image || null,
       is_featured: form.is_featured,
+      deposit_override: form.deposit_override === "" || form.deposit_override === null ? null : Number(form.deposit_override),
     };
     const { error } = form.id
       ? await supabase.from("vehicles").update(payload).eq("id", form.id)
@@ -182,9 +184,10 @@ const AdminVehicles = () => {
             </div>
             <div className="space-y-1.5"><Label>Statut</Label>
               <select className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={form.status} onChange={(e) => setForm({...form, status: e.target.value as any})}>
-                <option value="disponible">Disponible</option><option value="reserve">Réservé</option><option value="vendu">Vendu</option>
+                <option value="disponible">Disponible</option><option value="pre_reserve">Pré-réservé</option><option value="reserve">Réservé</option><option value="vendu">Vendu</option>
               </select>
             </div>
+            <div className="space-y-1.5"><Label>Acompte personnalisé (€)</Label><Input type="number" value={form.deposit_override} onChange={(e) => setForm({...form, deposit_override: e.target.value})} placeholder="Vide = montant par défaut" /></div>
             <div className="space-y-1.5"><Label>Places</Label><Input type="number" value={form.seats} onChange={(e) => setForm({...form, seats: +e.target.value})} /></div>
             <div className="space-y-1.5"><Label>Couchages</Label><Input type="number" value={form.beds} onChange={(e) => setForm({...form, beds: +e.target.value})} /></div>
             <div className="space-y-1.5"><Label>Kilométrage</Label><Input type="number" value={form.mileage} onChange={(e) => setForm({...form, mileage: +e.target.value})} /></div>

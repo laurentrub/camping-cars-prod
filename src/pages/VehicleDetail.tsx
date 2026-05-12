@@ -121,11 +121,17 @@ const VehicleDetail = () => {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-3">
-              <Button asChild variant="hero" size="lg" className="flex-1 min-w-[180px]">
-                <a href="#contact">Demander des infos</a>
-              </Button>
+              {vehicle.status === "disponible" ? (
+                <Button asChild variant="hero" size="lg" className="flex-1 min-w-[200px]">
+                  <Link to={`/reserver/${vehicle.slug}`}>Réserver — acompte par virement</Link>
+                </Button>
+              ) : (
+                <Button disabled variant="hero" size="lg" className="flex-1 min-w-[200px]">
+                  {vehicle.status === "pre_reserve" ? "Pré-réservé" : STATUS_LABELS[vehicle.status]}
+                </Button>
+              )}
               <Button asChild variant="elegant" size="lg">
-                <a href="tel:+33123456789">Être rappelé</a>
+                <a href="#contact">Demander des infos</a>
               </Button>
             </div>
 

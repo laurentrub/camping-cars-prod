@@ -13,6 +13,8 @@ import Reprise from "./pages/Reprise.tsx";
 import About from "./pages/About.tsx";
 import Contact from "./pages/Contact.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Reservation from "./pages/Reservation.tsx";
+import ReservationConfirmation from "./pages/ReservationConfirmation.tsx";
 
 import AdminAuth from "./pages/admin/AdminAuth.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
@@ -21,6 +23,8 @@ import AdminVehicles from "./pages/admin/AdminVehicles.tsx";
 import AdminLeads from "./pages/admin/AdminLeads.tsx";
 import AdminTradeIns from "./pages/admin/AdminTradeIns.tsx";
 import AdminUsers from "./pages/admin/AdminUsers.tsx";
+import AdminReservations from "./pages/admin/AdminReservations.tsx";
+import AdminSettings from "./pages/admin/AdminSettings.tsx";
 
 const queryClient = new QueryClient();
 
@@ -39,15 +43,19 @@ const App = () => (
             <Route path="/reprise" element={<Reprise />} />
             <Route path="/a-propos" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/reserver/:slug" element={<Reservation />} />
+            <Route path="/reservation/:reference" element={<ReservationConfirmation />} />
           </Route>
 
           <Route path="/admin/auth" element={<AdminAuth />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="vehicles" element={<AdminVehicles />} />
+            <Route path="reservations" element={<AdminReservations />} />
             <Route path="leads" element={<AdminLeads />} />
             <Route path="trade-ins" element={<AdminTradeIns />} />
             <Route path="users" element={<AdminUsers />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
