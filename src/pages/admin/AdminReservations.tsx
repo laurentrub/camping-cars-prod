@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus } from "lucide-react";
+import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus, Filter, X } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
@@ -30,6 +30,12 @@ const AdminReservations = () => {
   const [openId, setOpenId] = useState<string | null>(null);
   const [eventsByRes, setEventsByRes] = useState<Record<string, any[]>>({});
   const [noteDraft, setNoteDraft] = useState<Record<string, string>>({});
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [createdFrom, setCreatedFrom] = useState("");
+  const [createdTo, setCreatedTo] = useState("");
+  const [visitFrom, setVisitFrom] = useState("");
+  const [visitTo, setVisitTo] = useState("");
+  const [slotFilter, setSlotFilter] = useState<string>("all");
 
   const load = async () => {
     const { data } = await supabase
@@ -129,6 +135,11 @@ const AdminReservations = () => {
   const filtered = useMemo(() => {
     let out = items;
     if (filter !== "all") out = out.filter((r) => r.status === filter);
+    if (slotFilter !== "all") out = out.filter((r) => (r.requested_time_slot ?? "") === slotFilter);
+    if (createdFrom) out = out.filter((r) => new Date(r.created_at) >= new Date(createdFrom + "T00:00:00"));
+    if (createdTo) out = out.filter((r) => new Date(r.created_at) <= new Date(createdTo + "T23:59:59"));
+    if (visitFrom) out = out.filter((r) => r.requested_visit_date && r.requested_visit_date >= visitFrom);
+    if (visitTo) out = out.filter((r) => r.requested_visit_date && r.requested_visit_date <= visitTo);
     if (search.trim()) {
       const q = search.toLowerCase();
       out = out.filter((r) =>
@@ -139,13 +150,22 @@ const AdminReservations = () => {
       );
     }
     return out;
-  }, [items, filter, search]);
+  }, [items, filter, search, slotFilter, createdFrom, createdTo, visitFrom, visitTo]);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: items.length };
     STATUS_OPTS.forEach((s) => c[s.value] = items.filter((r) => r.status === s.value).length);
     return c;
   }, [items]);
+
+  const activeAdvancedCount =
+    (slotFilter !== "all" ? 1 : 0) +
+    (createdFrom ? 1 : 0) + (createdTo ? 1 : 0) +
+    (visitFrom ? 1 : 0) + (visitTo ? 1 : 0);
+
+  const resetAdvanced = () => {
+    setSlotFilter("all"); setCreatedFrom(""); setCreatedTo(""); setVisitFrom(""); setVisitTo("");
+  };
 
   return (
     <div>
@@ -166,7 +186,53 @@ const AdminReservations = () => {
         ))}
       </div>
 
-      <Input placeholder="Rechercher par référence, email, nom ou véhicule…" value={search} onChange={(e) => setSearch(e.target.value)} className="mt-4 max-w-md" />
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        <Input placeholder="Rechercher par référence, email, nom ou véhicule…" value={search} onChange={(e) => setSearch(e.target.value)} className="max-w-md" />
+        <Button variant="outline" size="sm" onClick={() => setShowAdvanced((v) => !v)}>
+          <Filter className="h-4 w-4" /> Filtres avancés{activeAdvancedCount > 0 ? ` (${activeAdvancedCount})` : ""}
+        </Button>
+        {activeAdvancedCount > 0 && (
+          <Button variant="ghost" size="sm" onClick={resetAdvanced}>
+            <X className="h-4 w-4" /> Réinitialiser
+          </Button>
+        )}
+        <span className="text-xs text-muted-foreground">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}</span>
+      </div>
+
+      {showAdvanced && (
+        <div className="mt-3 grid gap-4 rounded-xl border border-border bg-card p-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div>
+            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Date de demande</label>
+            <div className="mt-2 flex items-center gap-2">
+              <Input type="date" value={createdFrom} onChange={(e) => setCreatedFrom(e.target.value)} />
+              <span className="text-xs text-muted-foreground">→</span>
+              <Input type="date" value={createdTo} onChange={(e) => setCreatedTo(e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Date de rendez-vous</label>
+            <div className="mt-2 flex items-center gap-2">
+              <Input type="date" value={visitFrom} onChange={(e) => setVisitFrom(e.target.value)} />
+              <span className="text-xs text-muted-foreground">→</span>
+              <Input type="date" value={visitTo} onChange={(e) => setVisitTo(e.target.value)} />
+            </div>
+          </div>
+          <div>
+            <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Créneau</label>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {[
+                { v: "all", l: "Tous" },
+                { v: "matin", l: "Matin" },
+                { v: "apres_midi", l: "Après-midi" },
+              ].map((o) => (
+                <button key={o.v} onClick={() => setSlotFilter(o.v)} className={cn("rounded-full border px-3 py-1.5 text-xs font-medium", slotFilter === o.v ? "border-accent bg-accent text-accent-foreground" : "border-border")}>
+                  {o.l}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="mt-6 space-y-3">
         {filtered.length === 0 && <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Aucune demande.</div>}
