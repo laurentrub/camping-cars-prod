@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
-import { LeadForm } from "@/components/LeadForm";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { HandCoins, Repeat, Shield, Wrench, FileCheck, Sparkles } from "lucide-react";
 import showroom from "@/assets/showroom.jpg";
 
