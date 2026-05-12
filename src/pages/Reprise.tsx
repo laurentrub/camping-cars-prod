@@ -154,6 +154,14 @@ const Reprise = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const confirmErr = validateConfirmedContact({
+      email: String(fd.get("email") ?? ""),
+      emailConfirm: String(fd.get("email_confirm") ?? ""),
+      phone: String(fd.get("phone") ?? ""),
+      phoneConfirm: String(fd.get("phone_confirm") ?? ""),
+    });
+    if (confirmErr) { toast.error(confirmErr); return; }
     const parsed = collectFormData(e.currentTarget);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Formulaire incomplet");
