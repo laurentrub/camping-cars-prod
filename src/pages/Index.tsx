@@ -1,10 +1,11 @@
-import { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import heroRoad from "@/assets/hero-road.jpg";
 import interior from "@/assets/interior-1.jpg";
 import showroom from "@/assets/showroom.jpg";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Shield, HandCoins, Wrench, Repeat, Star, Quote } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { ArrowRight, Search, Shield, HandCoins, Wrench, Repeat, Star, Quote } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { VehicleCard } from "@/components/VehicleCard";
 import { useVehicles } from "@/hooks/useVehicles";
