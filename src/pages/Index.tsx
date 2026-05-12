@@ -26,7 +26,15 @@ const TESTIMONIALS = [
 
 const Index = () => {
   const { vehicles } = useVehicles();
+  const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const featured = useMemo(() => vehicles.filter((v) => v.is_featured).slice(0, 3), [vehicles]);
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = query.trim();
+    navigate(q ? `/catalogue?q=${encodeURIComponent(q)}` : "/catalogue");
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
