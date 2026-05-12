@@ -169,6 +169,73 @@ const AdminReservations = () => {
     setSlotFilter("all"); setCreatedFrom(""); setCreatedTo(""); setVisitFrom(""); setVisitTo("");
   };
 
+  const toggleSelect = (id: string) => {
+    setSelected((s) => {
+      const n = new Set(s); n.has(id) ? n.delete(id) : n.add(id); return n;
+    });
+  };
+  const filteredIds = useMemo(() => filtered.map((r) => r.id), [filtered]);
+  const allSelected = filteredIds.length > 0 && filteredIds.every((id) => selected.has(id));
+  const toggleSelectAll = () => {
+    setSelected((s) => {
+      if (allSelected) {
+        const n = new Set(s); filteredIds.forEach((id) => n.delete(id)); return n;
+      }
+      const n = new Set(s); filteredIds.forEach((id) => n.add(id)); return n;
+    });
+  };
+  const clearSelection = () => setSelected(new Set());
+
+  const bulkUpdateStatus = async (status: string, extra: Record<string, any> = {}) => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    if (!confirm(`Appliquer le statut « ${statusLabel(status)} » à ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    setBulkBusy(true);
+    const { error } = await supabase.from("reservations").update({ status: status as any, ...extra }).in("id", ids);
+    setBulkBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success(`${ids.length} demande${ids.length > 1 ? "s" : ""} mise${ids.length > 1 ? "s" : ""} à jour`);
+    clearSelection();
+    load();
+  };
+
+  const bulkLogContact = async () => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    const note = prompt(`Résumé d'appel appliqué à ${ids.length} demande(s) (optionnel) :`, "") ?? "";
+    setBulkBusy(true);
+    const events = ids.map((reservation_id) => ({
+      reservation_id,
+      event_type: "phone_contact",
+      note: note || "Contact téléphonique effectué (action en lot)",
+    }));
+    const { error: evErr } = await supabase.from("reservation_events").insert(events);
+    if (evErr) { setBulkBusy(false); return toast.error(evErr.message); }
+    const toUpdate = items.filter((r) => ids.includes(r.id) && r.status === "demande_visite").map((r) => r.id);
+    if (toUpdate.length > 0) {
+      await supabase.from("reservations").update({ status: "contact_effectue" as any }).in("id", toUpdate);
+    }
+    setBulkBusy(false);
+    toast.success(`Contact enregistré pour ${ids.length} demande${ids.length > 1 ? "s" : ""}`);
+    clearSelection();
+    load();
+  };
+
+  const bulkDelete = async () => {
+    const ids = filteredIds.filter((id) => selected.has(id));
+    if (ids.length === 0) return;
+    if (!confirm(`Supprimer définitivement ${ids.length} demande${ids.length > 1 ? "s" : ""} ?`)) return;
+    setBulkBusy(true);
+    const { error } = await supabase.from("reservations").delete().in("id", ids);
+    setBulkBusy(false);
+    if (error) return toast.error(error.message);
+    toast.success("Suppression effectuée");
+    clearSelection();
+    load();
+  };
+
+  const selectedCount = filteredIds.filter((id) => selected.has(id)).length;
+
   return (
     <div>
       <h1 className="font-serif text-3xl font-semibold">Demandes de visite</h1>
