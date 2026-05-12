@@ -36,6 +36,8 @@ const AdminReservations = () => {
   const [visitFrom, setVisitFrom] = useState("");
   const [visitTo, setVisitTo] = useState("");
   const [slotFilter, setSlotFilter] = useState<string>("all");
+  const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const load = async () => {
     const { data } = await supabase
