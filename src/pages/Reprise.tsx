@@ -464,8 +464,16 @@ const Reprise = () => {
                   <Input id="email" name="email" type="email" required maxLength={255} />
                 </div>
                 <div className="space-y-1.5">
+                  <Label htmlFor="email_confirm">Confirmation email *</Label>
+                  <Input id="email_confirm" name="email_confirm" type="email" required maxLength={255} {...noPasteProps} />
+                </div>
+                <div className="space-y-1.5">
                   <Label htmlFor="phone">Téléphone</Label>
                   <Input id="phone" name="phone" type="tel" maxLength={30} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="phone_confirm">Confirmation téléphone</Label>
+                  <Input id="phone_confirm" name="phone_confirm" type="tel" maxLength={30} {...noPasteProps} />
                 </div>
               </div>
             </fieldset>
