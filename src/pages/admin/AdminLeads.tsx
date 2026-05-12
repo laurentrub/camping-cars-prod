@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Mail, Phone, Calendar, Trash2, Search } from "lucide-react";
+import { Mail, Phone, Calendar, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +19,6 @@ const TYPE_LABEL: Record<string, string> = {
 const AdminLeads = () => {
   const [leads, setLeads] = useState<any[]>([]);
   const [filter, setFilter] = useState<string>("all");
-  const [query, setQuery] = useState("");
 
   const load = async () => {
     const { data } = await supabase
@@ -43,35 +41,14 @@ const AdminLeads = () => {
     load();
   };
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    let out = filter === "all" ? leads : leads.filter((l) => l.status === filter);
-    if (q) {
-      out = out.filter((l) =>
-        [l.first_name, l.last_name, l.email, l.phone, l.message, l.vehicles?.title]
-          .filter(Boolean)
-          .some((s) => String(s).toLowerCase().includes(q)),
-      );
-    }
-    return out;
-  }, [leads, filter, query]);
+  const filtered = filter === "all" ? leads : leads.filter((l) => l.status === filter);
 
   return (
     <div>
       <h1 className="font-serif text-3xl font-semibold">Demandes clients</h1>
       <p className="mt-1 text-sm text-muted-foreground">{leads.length} demande{leads.length > 1 ? "s" : ""} reçues.</p>
 
-      <div className="mt-6 relative max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Rechercher par nom, email, téléphone, message…"
-          className="pl-9"
-        />
-      </div>
-
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-6 flex flex-wrap gap-2">
         <button onClick={() => setFilter("all")} className={cn("rounded-full border px-3 py-1.5 text-xs font-medium", filter === "all" ? "border-accent bg-accent text-accent-foreground" : "border-border")}>Toutes</button>
         {STATUS_OPTS.map((s) => (
           <button key={s.value} onClick={() => setFilter(s.value)} className={cn("rounded-full border px-3 py-1.5 text-xs font-medium", filter === s.value ? "border-accent bg-accent text-accent-foreground" : "border-border")}>

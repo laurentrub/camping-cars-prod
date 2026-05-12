@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Search } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { TYPE_LABELS, formatPrice } from "@/lib/types";
 import { resolveImage } from "@/hooks/useVehicles";
@@ -48,16 +48,6 @@ const AdminVehicles = () => {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<FormState>(empty);
-  const [query, setQuery] = useState("");
-
-  const q = query.trim().toLowerCase();
-  const filteredList = q
-    ? list.filter((v) =>
-        [v.title, v.brand, v.model, v.slug, String(v.year)]
-          .filter(Boolean)
-          .some((s) => String(s).toLowerCase().includes(q)),
-      )
-    : list;
 
   const load = async () => {
     setLoading(true);
@@ -121,23 +111,11 @@ const AdminVehicles = () => {
         <Button variant="hero" onClick={startNew}><Plus className="h-4 w-4" /> Ajouter</Button>
       </div>
 
-      <div className="mt-6 relative max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Rechercher par titre, marque, modèle, année…"
-          className="pl-9"
-        />
-      </div>
-
-      <div className="mt-4 overflow-hidden rounded-xl border border-border bg-card shadow-soft">
+      <div className="mt-6 overflow-hidden rounded-xl border border-border bg-card shadow-soft">
         {loading ? (
           <div className="p-8 text-sm text-muted-foreground">Chargement…</div>
         ) : list.length === 0 ? (
           <div className="p-8 text-sm text-muted-foreground">Aucun véhicule. Cliquez sur Ajouter.</div>
-        ) : filteredList.length === 0 ? (
-          <div className="p-8 text-sm text-muted-foreground">Aucun résultat pour « {query} ».</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -152,7 +130,7 @@ const AdminVehicles = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {filteredList.map((v) => (
+                {list.map((v) => (
                   <tr key={v.id} className="hover:bg-secondary/30">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">

@@ -16,8 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
-import { Loader2, Eye, Trash2, Mail, Phone, ImageIcon, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Loader2, Eye, Trash2, Mail, Phone, ImageIcon } from "lucide-react";
 import { formatPrice } from "@/lib/types";
 import { Database } from "@/integrations/supabase/types";
 
@@ -60,7 +59,6 @@ const AdminTradeIns = () => {
   const [filter, setFilter] = useState<TradeInStatus | "all">("all");
   const [selected, setSelected] = useState<TradeIn | null>(null);
   const [photoUrls, setPhotoUrls] = useState<string[]>([]);
-  const [query, setQuery] = useState("");
 
   const load = async () => {
     setLoading(true);
@@ -113,13 +111,7 @@ const AdminTradeIns = () => {
     }
   };
 
-  const q = query.trim().toLowerCase();
-  const filtered = (filter === "all" ? items : items.filter((i) => i.status === filter)).filter((i) => {
-    if (!q) return true;
-    return [i.first_name, i.last_name, i.email, i.phone, i.brand, i.model, String(i.year)]
-      .filter(Boolean)
-      .some((s) => String(s).toLowerCase().includes(q));
-  });
+  const filtered = filter === "all" ? items : items.filter((i) => i.status === filter);
 
   return (
     <div className="space-y-6">
@@ -141,16 +133,6 @@ const AdminTradeIns = () => {
             ))}
           </SelectContent>
         </Select>
-      </div>
-
-      <div className="relative max-w-md">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Rechercher par client, email, marque, modèle…"
-          className="pl-9"
-        />
       </div>
 
       {loading ? (
