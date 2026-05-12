@@ -108,18 +108,21 @@ export type Database = {
           admin_notes: string | null
           cancellation_reason: string | null
           cancelled_at: string | null
+          confirmed_visit_at: string | null
           created_at: string
-          deposit_amount: number
+          deposit_amount: number | null
           deposit_received_amount: number | null
           deposit_received_at: string | null
           email: string
-          expires_at: string
+          expires_at: string | null
           first_name: string
           id: string
           last_name: string
           message: string | null
           phone: string | null
           reference: string
+          requested_time_slot: string | null
+          requested_visit_date: string | null
           status: Database["public"]["Enums"]["reservation_status"]
           updated_at: string
           vehicle_id: string
@@ -128,18 +131,21 @@ export type Database = {
           admin_notes?: string | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
+          confirmed_visit_at?: string | null
           created_at?: string
-          deposit_amount: number
+          deposit_amount?: number | null
           deposit_received_amount?: number | null
           deposit_received_at?: string | null
           email: string
-          expires_at: string
+          expires_at?: string | null
           first_name: string
           id?: string
           last_name: string
           message?: string | null
           phone?: string | null
           reference: string
+          requested_time_slot?: string | null
+          requested_visit_date?: string | null
           status?: Database["public"]["Enums"]["reservation_status"]
           updated_at?: string
           vehicle_id: string
@@ -148,18 +154,21 @@ export type Database = {
           admin_notes?: string | null
           cancellation_reason?: string | null
           cancelled_at?: string | null
+          confirmed_visit_at?: string | null
           created_at?: string
-          deposit_amount?: number
+          deposit_amount?: number | null
           deposit_received_amount?: number | null
           deposit_received_at?: string | null
           email?: string
-          expires_at?: string
+          expires_at?: string | null
           first_name?: string
           id?: string
           last_name?: string
           message?: string | null
           phone?: string | null
           reference?: string
+          requested_time_slot?: string | null
+          requested_visit_date?: string | null
           status?: Database["public"]["Enums"]["reservation_status"]
           updated_at?: string
           vehicle_id?: string
