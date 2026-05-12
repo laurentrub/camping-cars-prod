@@ -57,13 +57,20 @@ const Services = () => (
       <div className="rounded-2xl border border-border bg-card p-8 shadow-card md:p-12">
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
-            <span className="eyebrow">Une question ?</span>
-            <h2 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Un conseiller vous rappelle</h2>
+            <span className="eyebrow">Passons à l'étape suivante</span>
+            <h2 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Réservez une visite au showroom</h2>
             <p className="mt-3 text-muted-foreground">
-              Présentez-nous votre projet, vos besoins et votre budget. Nous vous proposons les meilleures options sous 24h.
+              Le meilleur moyen de concrétiser votre projet : venez voir le véhicule qui vous intéresse. Choisissez-le dans le catalogue, proposez un créneau, nous confirmons par téléphone.
             </p>
           </div>
-          <LeadForm type="rappel" title="Demande de rappel" subtitle="Réponse sous 24h ouvrées" compact />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center md:justify-end">
+            <Button asChild variant="hero" size="xl">
+              <Link to="/catalogue">Voir le catalogue</Link>
+            </Button>
+            <a href="tel:+33123456789" className="text-sm font-semibold text-foreground hover:text-accent">
+              ou appelez-nous au 01 23 45 67 89
+            </a>
+          </div>
         </div>
       </div>
     </section>
