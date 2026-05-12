@@ -378,6 +378,9 @@ export type Database = {
         | "vente_finalisee"
         | "annulee"
         | "expiree"
+        | "demande_visite"
+        | "visite_confirmee"
+        | "visite_realisee"
       trade_in_condition: "excellent" | "bon" | "moyen" | "a_renover"
       trade_in_status: "nouveau" | "en_cours" | "estime" | "refuse" | "archive"
       vehicle_condition: "neuf" | "occasion"
@@ -519,6 +522,9 @@ export const Constants = {
         "vente_finalisee",
         "annulee",
         "expiree",
+        "demande_visite",
+        "visite_confirmee",
+        "visite_realisee",
       ],
       trade_in_condition: ["excellent", "bon", "moyen", "a_renover"],
       trade_in_status: ["nouveau", "en_cours", "estime", "refuse", "archive"],
