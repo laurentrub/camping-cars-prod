@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
-import { LeadForm } from "@/components/LeadForm";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 
 const Contact = () => (
@@ -68,8 +69,23 @@ const Contact = () => (
         </div>
 
         <div className="space-y-8">
-          <div className="rounded-xl border border-border bg-card p-6 shadow-card md:p-8">
-            <LeadForm title="Envoyez-nous un message" subtitle="Nous vous répondons sous 24h ouvrées" />
+          <div className="rounded-xl border border-accent/30 bg-accent-soft/40 p-6 shadow-card md:p-8">
+            <span className="eyebrow">Visite au showroom</span>
+            <h2 className="mt-3 font-serif text-2xl font-semibold md:text-3xl">Réservez un créneau pour voir un véhicule</h2>
+            <p className="mt-3 text-sm text-muted-foreground">
+              Pour avancer concrètement sur votre projet, le plus efficace est de venir voir le véhicule. Choisissez-le dans le catalogue, proposez une date et un créneau, nous vous rappelons pour confirmer le rendez-vous selon les disponibilités du garage.
+            </p>
+            <ol className="mt-5 space-y-2 text-sm text-foreground">
+              <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">1</span>Choisissez un véhicule dans le catalogue</li>
+              <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">2</span>Proposez une date et un créneau</li>
+              <li className="flex gap-3"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-semibold text-primary-foreground">3</span>Confirmation par téléphone</li>
+            </ol>
+            <Button asChild variant="hero" size="lg" className="mt-6 w-full sm:w-auto">
+              <Link to="/catalogue">Voir le catalogue</Link>
+            </Button>
+            <p className="mt-4 text-xs text-muted-foreground">
+              Pour une question précise sur un véhicule, utilisez le bouton « Réserver une visite » directement sur sa fiche. Pour une reprise, rendez-vous sur la page <Link to="/reprise" className="font-medium text-accent hover:underline">Reprise</Link>.
+            </p>
           </div>
 
           <div className="overflow-hidden rounded-xl border border-border shadow-soft">
