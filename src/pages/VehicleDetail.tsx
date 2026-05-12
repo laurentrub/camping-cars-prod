@@ -131,7 +131,7 @@ const VehicleDetail = () => {
                 </Button>
               )}
               <Button asChild variant="elegant" size="lg">
-                <a href="#contact">Demander des infos</a>
+                <a href="tel:+33123456789">Nous appeler</a>
               </Button>
             </div>
 
