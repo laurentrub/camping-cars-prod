@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      bank_settings: {
+        Row: {
+          account_holder: string | null
+          bank_name: string | null
+          bic: string | null
+          default_deposit_amount: number
+          hold_days: number
+          iban: string | null
+          id: string
+          instructions: string | null
+          singleton: boolean
+          updated_at: string
+        }
+        Insert: {
+          account_holder?: string | null
+          bank_name?: string | null
+          bic?: string | null
+          default_deposit_amount?: number
+          hold_days?: number
+          iban?: string | null
+          id?: string
+          instructions?: string | null
+          singleton?: boolean
+          updated_at?: string
+        }
+        Update: {
+          account_holder?: string | null
+          bank_name?: string | null
+          bic?: string | null
+          default_deposit_amount?: number
+          hold_days?: number
+          iban?: string | null
+          id?: string
+          instructions?: string | null
+          singleton?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
@@ -63,6 +102,69 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reservations: {
+        Row: {
+          admin_notes: string | null
+          cancellation_reason: string | null
+          cancelled_at: string | null
+          created_at: string
+          deposit_amount: number
+          deposit_received_amount: number | null
+          deposit_received_at: string | null
+          email: string
+          expires_at: string
+          first_name: string
+          id: string
+          last_name: string
+          message: string | null
+          phone: string | null
+          reference: string
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+          vehicle_id: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          deposit_amount: number
+          deposit_received_amount?: number | null
+          deposit_received_at?: string | null
+          email: string
+          expires_at: string
+          first_name: string
+          id?: string
+          last_name: string
+          message?: string | null
+          phone?: string | null
+          reference: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          vehicle_id: string
+        }
+        Update: {
+          admin_notes?: string | null
+          cancellation_reason?: string | null
+          cancelled_at?: string | null
+          created_at?: string
+          deposit_amount?: number
+          deposit_received_amount?: number | null
+          deposit_received_at?: string | null
+          email?: string
+          expires_at?: string
+          first_name?: string
+          id?: string
+          last_name?: string
+          message?: string | null
+          phone?: string | null
+          reference?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          vehicle_id?: string
+        }
+        Relationships: []
       }
       trade_ins: {
         Row: {
@@ -170,6 +272,7 @@ export type Database = {
           condition: Database["public"]["Enums"]["vehicle_condition"]
           cover_image: string | null
           created_at: string
+          deposit_override: number | null
           description: string
           features: string[] | null
           fuel: string | null
@@ -181,6 +284,7 @@ export type Database = {
           model: string
           power_hp: number | null
           price: number
+          reserved_until: string | null
           seats: number
           short_description: string | null
           slug: string
@@ -197,6 +301,7 @@ export type Database = {
           condition?: Database["public"]["Enums"]["vehicle_condition"]
           cover_image?: string | null
           created_at?: string
+          deposit_override?: number | null
           description: string
           features?: string[] | null
           fuel?: string | null
@@ -208,6 +313,7 @@ export type Database = {
           model: string
           power_hp?: number | null
           price: number
+          reserved_until?: string | null
           seats?: number
           short_description?: string | null
           slug: string
@@ -224,6 +330,7 @@ export type Database = {
           condition?: Database["public"]["Enums"]["vehicle_condition"]
           cover_image?: string | null
           created_at?: string
+          deposit_override?: number | null
           description?: string
           features?: string[] | null
           fuel?: string | null
@@ -235,6 +342,7 @@ export type Database = {
           model?: string
           power_hp?: number | null
           price?: number
+          reserved_until?: string | null
           seats?: number
           short_description?: string | null
           slug?: string
@@ -264,10 +372,16 @@ export type Database = {
       app_role: "admin" | "user"
       lead_status: "nouveau" | "en_cours" | "traite" | "archive"
       lead_type: "contact" | "rappel" | "vehicule" | "reprise" | "financement"
+      reservation_status:
+        | "en_attente_virement"
+        | "acompte_recu"
+        | "vente_finalisee"
+        | "annulee"
+        | "expiree"
       trade_in_condition: "excellent" | "bon" | "moyen" | "a_renover"
       trade_in_status: "nouveau" | "en_cours" | "estime" | "refuse" | "archive"
       vehicle_condition: "neuf" | "occasion"
-      vehicle_status: "disponible" | "reserve" | "vendu"
+      vehicle_status: "disponible" | "reserve" | "vendu" | "pre_reserve"
       vehicle_type: "profile" | "integral" | "fourgon" | "capucine"
     }
     CompositeTypes: {
@@ -399,10 +513,17 @@ export const Constants = {
       app_role: ["admin", "user"],
       lead_status: ["nouveau", "en_cours", "traite", "archive"],
       lead_type: ["contact", "rappel", "vehicule", "reprise", "financement"],
+      reservation_status: [
+        "en_attente_virement",
+        "acompte_recu",
+        "vente_finalisee",
+        "annulee",
+        "expiree",
+      ],
       trade_in_condition: ["excellent", "bon", "moyen", "a_renover"],
       trade_in_status: ["nouveau", "en_cours", "estime", "refuse", "archive"],
       vehicle_condition: ["neuf", "occasion"],
-      vehicle_status: ["disponible", "reserve", "vendu"],
+      vehicle_status: ["disponible", "reserve", "vendu", "pre_reserve"],
       vehicle_type: ["profile", "integral", "fourgon", "capucine"],
     },
   },
