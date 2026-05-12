@@ -303,7 +303,43 @@ const AdminReservations = () => {
         </div>
       )}
 
-      <div className="mt-6 space-y-3">
+      <div className="mt-6 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card p-3">
+        <Button size="sm" variant="ghost" onClick={toggleSelectAll} disabled={filteredIds.length === 0}>
+          {allSelected ? <CheckSquare className="h-4 w-4" /> : <Square className="h-4 w-4" />}
+          {allSelected ? "Tout désélectionner" : "Tout sélectionner"}
+        </Button>
+        <span className="text-xs text-muted-foreground">
+          {selectedCount > 0 ? `${selectedCount} sélectionnée${selectedCount > 1 ? "s" : ""}` : "Aucune sélection"}
+        </span>
+        {selectedCount > 0 && (
+          <>
+            <span className="mx-1 h-5 w-px bg-border" />
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={bulkLogContact}>
+              <PhoneCall className="h-4 w-4" /> Contact effectué
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("en_attente_client")}>
+              <Clock className="h-4 w-4" /> Attente client
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("visite_confirmee", { confirmed_visit_at: new Date().toISOString() })}>
+              <CheckCircle2 className="h-4 w-4" /> Valider la visite
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("visite_realisee")}>
+              <CalendarCheck className="h-4 w-4" /> Visite réalisée
+            </Button>
+            <Button size="sm" variant="outline" disabled={bulkBusy} onClick={() => bulkUpdateStatus("annulee", { cancelled_at: new Date().toISOString() })}>
+              <XCircle className="h-4 w-4 text-destructive" /> Annuler
+            </Button>
+            <Button size="sm" variant="ghost" disabled={bulkBusy} onClick={bulkDelete}>
+              <Trash2 className="h-4 w-4 text-destructive" /> Supprimer
+            </Button>
+            <Button size="sm" variant="ghost" onClick={clearSelection}>
+              <X className="h-4 w-4" /> Effacer
+            </Button>
+          </>
+        )}
+      </div>
+
+      <div className="mt-3 space-y-3">
         {filtered.length === 0 && <div className="rounded-xl border border-dashed p-8 text-center text-sm text-muted-foreground">Aucune demande.</div>}
         {filtered.map((r) => {
           const status = STATUS_OPTS.find((s) => s.value === r.status);
@@ -317,10 +353,19 @@ const AdminReservations = () => {
             ? format(new Date(r.requested_visit_date + "T00:00:00"), "EEE d MMM yyyy", { locale: fr })
             : "—";
           const events = eventsByRes[r.id] ?? [];
+          const isSelected = selected.has(r.id);
           return (
-            <div key={r.id} className="rounded-xl border border-border bg-card p-5 shadow-soft">
+            <div key={r.id} className={cn("rounded-xl border bg-card p-5 shadow-soft", isSelected ? "border-accent ring-1 ring-accent" : "border-border")}>
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
+                <div className="flex items-start gap-3">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => toggleSelect(r.id)}
+                    className="mt-1 h-4 w-4 cursor-pointer accent-accent"
+                    aria-label={`Sélectionner ${r.reference}`}
+                  />
+                  <div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-mono text-sm font-bold">{r.reference}</span>
                     <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider", status?.color)}>{status?.label}</span>
