@@ -42,6 +42,13 @@ export function LeadForm({ type = "contact", vehicleId, defaultMessage, compact,
       phone: String(fd.get("phone") ?? ""),
       message: String(fd.get("message") ?? ""),
     };
+    const confirmErr = validateConfirmedContact({
+      email: data.email,
+      emailConfirm: String(fd.get("email_confirm") ?? ""),
+      phone: data.phone,
+      phoneConfirm: String(fd.get("phone_confirm") ?? ""),
+    });
+    if (confirmErr) { toast.error(confirmErr); return; }
     const parsed = leadSchema.safeParse(data);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Formulaire invalide");
