@@ -9,7 +9,7 @@ import { ArrowRight, Search, Shield, HandCoins, Wrench, Repeat, Star, Quote } fr
 import { SEO } from "@/components/SEO";
 import { VehicleCard } from "@/components/VehicleCard";
 import { useVehicles } from "@/hooks/useVehicles";
-import { LeadForm } from "@/components/LeadForm";
+
 
 const SERVICES = [
   { icon: HandCoins, title: "Vente neuve & occasion", text: "Plus de 80 modèles soigneusement sélectionnés des plus grandes marques européennes." },
