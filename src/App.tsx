@@ -17,6 +17,7 @@ import Reservation from "./pages/Reservation.tsx";
 import ReservationConfirmation from "./pages/ReservationConfirmation.tsx";
 
 import Favorites from "./pages/Favorites.tsx";
+import Devis from "./pages/Devis.tsx";
 import PlanDuSite from "./pages/PlanDuSite.tsx";
 import MentionsLegales from "./pages/legal/MentionsLegales.tsx";
 import CGV from "./pages/legal/CGV.tsx";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/a-propos" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/favoris" element={<Favorites />} />
+            <Route path="/devis" element={<Devis />} />
             <Route path="/plan-du-site" element={<PlanDuSite />} />
             <Route path="/mentions-legales" element={<MentionsLegales />} />
             <Route path="/cgv" element={<CGV />} />
