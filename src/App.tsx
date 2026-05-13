@@ -17,6 +17,11 @@ import Reservation from "./pages/Reservation.tsx";
 import ReservationConfirmation from "./pages/ReservationConfirmation.tsx";
 
 import Favorites from "./pages/Favorites.tsx";
+import PlanDuSite from "./pages/PlanDuSite.tsx";
+import MentionsLegales from "./pages/legal/MentionsLegales.tsx";
+import CGV from "./pages/legal/CGV.tsx";
+import PolitiqueConfidentialite from "./pages/legal/PolitiqueConfidentialite.tsx";
+import Cookies from "./pages/legal/Cookies.tsx";
 import AdminAuth from "./pages/admin/AdminAuth.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
@@ -45,6 +50,11 @@ const App = () => (
             <Route path="/a-propos" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/favoris" element={<Favorites />} />
+            <Route path="/plan-du-site" element={<PlanDuSite />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/cgv" element={<CGV />} />
+            <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+            <Route path="/cookies" element={<Cookies />} />
             <Route path="/reserver/:slug" element={<Reservation />} />
             <Route path="/reservation/:reference" element={<ReservationConfirmation />} />
           </Route>
