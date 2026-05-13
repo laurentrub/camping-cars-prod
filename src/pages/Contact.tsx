@@ -1,13 +1,13 @@
 import { SEO } from "@/components/SEO";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, MapPin, Clock } from "lucide-react";
 
 const Contact = () => (
   <>
     <SEO
       title="Contact — Horizon Évasion | Concessionnaire camping-car Bordeaux"
-      description="Contactez nos conseillers pour votre projet camping-car. Téléphone, email, adresse et formulaire de contact."
+      description="Contactez nos conseillers pour votre projet camping-car. Téléphone, adresse et horaires."
     />
 
     <section className="border-b border-border bg-gradient-soft py-12 md:py-16">
@@ -32,17 +32,6 @@ const Contact = () => (
               01 23 45 67 89
             </a>
             <p className="mt-1 text-xs text-muted-foreground">Du lundi au samedi · Appel non surtaxé</p>
-          </div>
-
-          <div className="rounded-xl border border-border bg-card p-6 shadow-soft">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
-              <Mail className="h-5 w-5" />
-            </div>
-            <h2 className="mt-4 font-serif text-lg font-semibold">Par email</h2>
-            <a href="mailto:contact@horizon-evasion.fr" className="mt-1 block text-base font-medium text-foreground hover:text-accent">
-              contact@horizon-evasion.fr
-            </a>
-            <p className="mt-1 text-xs text-muted-foreground">Réponse sous 24h ouvrées</p>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-6 shadow-soft">

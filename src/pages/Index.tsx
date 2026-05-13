@@ -9,6 +9,7 @@ import { ArrowRight, Search, Shield, HandCoins, Wrench, Repeat, Star, Quote } fr
 import { SEO } from "@/components/SEO";
 import { VehicleCard } from "@/components/VehicleCard";
 import { useVehicles } from "@/hooks/useVehicles";
+import { useFavorites } from "@/hooks/useFavorites";
 
 
 const SERVICES = [
@@ -26,6 +27,7 @@ const TESTIMONIALS = [
 
 const Index = () => {
   const { vehicles } = useVehicles();
+  const { isFavorite, toggle: toggleFavorite } = useFavorites();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const featured = useMemo(() => vehicles.filter((v) => v.is_featured).slice(0, 3), [vehicles]);
@@ -160,7 +162,9 @@ const Index = () => {
           </Button>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featured.map((v) => <VehicleCard key={v.id} vehicle={v} />)}
+          {featured.map((v) => (
+            <VehicleCard key={v.id} vehicle={v} isFavorite={isFavorite(v.id)} onToggleFavorite={toggleFavorite} />
+          ))}
         </div>
       </section>
 

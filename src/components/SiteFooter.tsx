@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, MapPin, Clock } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -29,7 +29,6 @@ export function SiteFooter() {
           <h3 className="font-serif text-sm font-semibold uppercase tracking-wider text-accent">Contact</h3>
           <ul className="mt-4 space-y-3 text-sm text-primary-foreground/80">
             <li className="flex items-start gap-2"><Phone className="mt-0.5 h-4 w-4 text-accent" /> <a href="tel:+33123456789" className="hover:text-accent transition-smooth">01 23 45 67 89</a></li>
-            <li className="flex items-start gap-2"><Mail className="mt-0.5 h-4 w-4 text-accent" /> <a href="mailto:contact@horizon-evasion.fr" className="hover:text-accent transition-smooth">contact@horizon-evasion.fr</a></li>
             <li className="flex items-start gap-2"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> 25 route de l'Aventure, 33000 Bordeaux</li>
           </ul>
         </div>
