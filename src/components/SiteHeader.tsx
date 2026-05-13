@@ -69,7 +69,7 @@ export function SiteHeader() {
             className="flex items-center gap-2 text-sm font-semibold text-foreground transition-smooth hover:text-accent"
           >
             <Phone className="h-4 w-4 text-accent" />
-            01 23 45 67 89
+            04 51 45 94 68
           </a>
           <Button asChild variant="hero" size="sm">
             <Link to="/contact">Nous contacter</Link>
