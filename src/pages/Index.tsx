@@ -88,7 +88,7 @@ const Index = () => {
                 <Link to="/catalogue">Découvrir le catalogue <ArrowRight className="h-4 w-4" /></Link>
               </Button>
               <Button asChild variant="outline" size="xl" className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-foreground">
-                <a href="#rdv">Prendre rendez-vous</a>
+                <a href="#rdv">Demander un devis</a>
               </Button>
             </div>
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-primary-foreground/20 pt-6 text-center">
