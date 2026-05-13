@@ -66,6 +66,7 @@ const Index = () => {
           alt="Camping-car premium sur une route de montagne au coucher du soleil"
           width={1920}
           height={1080}
+          fetchPriority="high"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-hero" />
@@ -85,7 +86,7 @@ const Index = () => {
                 <Link to="/catalogue">Découvrir le catalogue <ArrowRight className="h-4 w-4" /></Link>
               </Button>
               <Button asChild variant="outline" size="xl" className="border-primary-foreground/40 bg-transparent text-primary-foreground hover:bg-primary-foreground hover:text-foreground">
-                <Link to="/catalogue">Réserver une visite</Link>
+                <a href="#rdv">Prendre rendez-vous</a>
               </Button>
             </div>
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-primary-foreground/20 pt-6 text-center">
@@ -240,7 +241,7 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="container-prose mt-24">
+      <section id="rdv" className="container-prose mt-24">
         <div className="relative overflow-hidden rounded-2xl bg-gradient-deep p-8 md:p-14">
           <img src={showroom} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover opacity-15" />
           <div className="relative grid gap-10 md:grid-cols-2 md:items-center">

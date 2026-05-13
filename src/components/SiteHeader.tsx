@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Heart, Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useFavorites } from "@/hooks/useFavorites";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -16,6 +17,7 @@ const NAV = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { pathname } = useLocation();
+  const { ids: favoriteIds } = useFavorites();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
@@ -50,6 +52,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          {favoriteIds.length > 0 && (
+            <Link
+              to="/favoris"
+              aria-label={`Mes favoris (${favoriteIds.length})`}
+              className="relative flex items-center justify-center text-muted-foreground transition-smooth hover:text-accent"
+            >
+              <Heart className="h-5 w-5" />
+              <span className="absolute -right-1.5 -top-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-accent-foreground">
+                {favoriteIds.length}
+              </span>
+            </Link>
+          )}
           <a
             href="tel:+33123456789"
             className="flex items-center gap-2 text-sm font-semibold text-foreground transition-smooth hover:text-accent"

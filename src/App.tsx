@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound.tsx";
 import Reservation from "./pages/Reservation.tsx";
 import ReservationConfirmation from "./pages/ReservationConfirmation.tsx";
 
+import Favorites from "./pages/Favorites.tsx";
 import AdminAuth from "./pages/admin/AdminAuth.tsx";
 import AdminLayout from "./pages/admin/AdminLayout.tsx";
 import AdminDashboard from "./pages/admin/AdminDashboard.tsx";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/reprise" element={<Reprise />} />
             <Route path="/a-propos" element={<About />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/favoris" element={<Favorites />} />
             <Route path="/reserver/:slug" element={<Reservation />} />
             <Route path="/reservation/:reference" element={<ReservationConfirmation />} />
           </Route>

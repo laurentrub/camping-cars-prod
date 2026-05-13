@@ -1,19 +1,23 @@
 import { useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { VehicleCard } from "@/components/VehicleCard";
 import { useVehicles } from "@/hooks/useVehicles";
+import { useFavorites } from "@/hooks/useFavorites";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { TYPE_LABELS, VehicleType, VehicleCondition } from "@/lib/types";
-import { Filter, X, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Filter, Heart, X, Search } from "lucide-react";
+
+const PAGE_SIZE = 12;
 
 const TYPES: VehicleType[] = ["fourgon", "profile", "integral", "capucine"];
 
 const Catalogue = () => {
   const { vehicles, loading } = useVehicles();
+  const { isFavorite, toggle: toggleFavorite, ids: favoriteIds } = useFavorites();
   const [params, setParams] = useSearchParams();
 
   const initialType = (params.get("type") as VehicleType | null) ?? null;
@@ -29,7 +33,10 @@ const Catalogue = () => {
   const brands = useMemo(() => Array.from(new Set(vehicles.map((v) => v.brand))).sort(), [vehicles]);
   const [brand, setBrand] = useState<string | null>(null);
 
+  const [page, setPage] = useState(1);
+
   const filtered = useMemo(() => {
+    setPage(1);
     return vehicles.filter((v) => {
       if (search && !`${v.brand} ${v.model} ${v.title}`.toLowerCase().includes(search.toLowerCase())) return false;
       if (type && v.type !== type) return false;
@@ -40,6 +47,9 @@ const Catalogue = () => {
       return true;
     });
   }, [vehicles, search, type, condition, brand, maxPrice, minSeats]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const reset = () => {
     setSearch(""); setType(null); setCondition(null); setBrand(null); setMaxPrice(150000); setMinSeats(0);
@@ -160,6 +170,11 @@ const Catalogue = () => {
           <div>
             <div className="mb-6 hidden items-center justify-between lg:flex">
               <div className="text-sm text-muted-foreground">{filtered.length} résultat{filtered.length > 1 ? "s" : ""} sur {vehicles.length}</div>
+              {favoriteIds.length > 0 && (
+                <Link to="/favoris" className="flex items-center gap-1.5 text-sm font-medium text-accent hover:underline">
+                  <Heart className="h-4 w-4 fill-current" /> {favoriteIds.length} favori{favoriteIds.length > 1 ? "s" : ""}
+                </Link>
+              )}
             </div>
 
             {loading ? (
@@ -175,9 +190,42 @@ const Catalogue = () => {
                 <Button variant="elegant" size="sm" onClick={reset} className="mt-4">Réinitialiser les filtres</Button>
               </div>
             ) : (
-              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                {filtered.map((v) => <VehicleCard key={v.id} vehicle={v} />)}
-              </div>
+              <>
+                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {paginated.map((v) => (
+                    <VehicleCard
+                      key={v.id}
+                      vehicle={v}
+                      isFavorite={isFavorite(v.id)}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="mt-10 flex items-center justify-center gap-3">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => { setPage((p) => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                      disabled={page === 1}
+                    >
+                      <ChevronLeft className="h-4 w-4" /> Précédent
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      Page {page} / {totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => { setPage((p) => Math.min(totalPages, p + 1)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                      disabled={page === totalPages}
+                    >
+                      Suivant <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

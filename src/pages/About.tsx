@@ -18,7 +18,7 @@ const About = () => (
     />
 
     <section className="relative overflow-hidden">
-      <img src={showroom} alt="Showroom Horizon Évasion" className="h-[50vh] w-full object-cover" />
+      <img src={showroom} alt="Showroom Horizon Évasion" width={1920} height={1080} fetchPriority="high" className="h-[50vh] w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute inset-0 flex items-end pb-16">
         <div className="container-prose text-primary-foreground">

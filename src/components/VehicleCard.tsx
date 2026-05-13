@@ -1,10 +1,16 @@
 import { Link } from "react-router-dom";
-import { Users, BedDouble, Calendar, Gauge } from "lucide-react";
+import { Heart, Users, BedDouble, Calendar, Gauge } from "lucide-react";
 import { Vehicle, TYPE_LABELS, STATUS_LABELS, formatPrice, formatMileage } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+interface VehicleCardProps {
+  vehicle: Vehicle;
+  isFavorite?: boolean;
+  onToggleFavorite?: (id: string) => void;
+}
+
+export function VehicleCard({ vehicle, isFavorite = false, onToggleFavorite }: VehicleCardProps) {
   const sold = vehicle.status === "vendu";
   return (
     <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-soft transition-smooth hover:shadow-card hover:-translate-y-1">
@@ -34,6 +40,21 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <div className="absolute right-3 top-3 rounded-full bg-destructive px-3 py-1 text-xs font-semibold text-destructive-foreground shadow-soft">
             {STATUS_LABELS[vehicle.status]}
           </div>
+        )}
+        {onToggleFavorite && (
+          <button
+            type="button"
+            onClick={(e) => { e.preventDefault(); onToggleFavorite(vehicle.id); }}
+            aria-label={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+            className={cn(
+              "absolute bottom-3 right-3 flex h-8 w-8 items-center justify-center rounded-full shadow-soft transition-smooth",
+              isFavorite
+                ? "bg-destructive text-destructive-foreground"
+                : "bg-background/90 text-muted-foreground hover:bg-destructive hover:text-destructive-foreground",
+            )}
+          >
+            <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
+          </button>
         )}
       </Link>
 

@@ -1,9 +1,11 @@
+import { useEffect } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard, Truck, Inbox, Repeat, Users, LogOut, ExternalLink, BookmarkCheck, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 const NAV = [
   { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard, end: true },
@@ -18,6 +20,16 @@ const NAV = [
 const AdminLayout = () => {
   const { user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" && !session) {
+        toast.error("Session expirée. Veuillez vous reconnecter.");
+        navigate("/admin/auth");
+      }
+    });
+    return () => sub.subscription.unsubscribe();
+  }, [navigate]);
 
   if (loading) return <div className="p-10">Chargement…</div>;
   if (!user) { navigate("/admin/auth"); return null; }

@@ -292,7 +292,7 @@ const AdminTradeIns = () => {
                     <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
                       {photoUrls.map((url, i) => (
                         <a key={i} href={url} target="_blank" rel="noreferrer" className="block aspect-square overflow-hidden rounded-lg border border-border">
-                          <img src={url} alt={`Photo ${i + 1}`} className="h-full w-full object-cover transition-smooth hover:scale-105" />
+                          <img src={url} alt={`Photo ${i + 1}`} loading="lazy" width={400} height={400} className="h-full w-full object-cover transition-smooth hover:scale-105" />
                         </a>
                       ))}
                     </div>

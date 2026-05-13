@@ -79,7 +79,7 @@ const VehicleDetail = () => {
           <div>
             <div className="overflow-hidden rounded-xl bg-muted shadow-card">
               {cover && (
-                <img src={cover} alt={vehicle.title} width={1280} height={960} className="aspect-[4/3] w-full object-cover" />
+                <img src={cover} alt={vehicle.title} width={1280} height={960} fetchPriority="high" className="aspect-[4/3] w-full object-cover" />
               )}
             </div>
             {gallery.length > 1 && (

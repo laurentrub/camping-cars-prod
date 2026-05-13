@@ -185,7 +185,7 @@ const Reservation = () => {
             <div className="text-xs uppercase tracking-wider text-muted-foreground">Véhicule</div>
             <div className="mt-1 font-serif text-xl font-semibold">{vehicle.title}</div>
             {vehicle.cover_image && (
-              <img src={vehicle.cover_image} alt={vehicle.title} className="mt-4 aspect-[4/3] w-full rounded-md object-cover" />
+              <img src={vehicle.cover_image} alt={vehicle.title} loading="lazy" width={400} height={300} className="mt-4 aspect-[4/3] w-full rounded-md object-cover" />
             )}
             <dl className="mt-5 space-y-2 text-sm">
               <div className="flex justify-between"><dt className="text-muted-foreground">Prix TTC</dt><dd className="font-medium">{formatPrice(vehicle.price)}</dd></div>

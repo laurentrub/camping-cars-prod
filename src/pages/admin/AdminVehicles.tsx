@@ -136,7 +136,7 @@ const AdminVehicles = () => {
                   <tr key={v.id} className="hover:bg-secondary/30">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        {v.cover_image && <img src={resolveImage(v.cover_image) ?? ""} alt="" className="h-12 w-16 rounded object-cover" />}
+                        {v.cover_image && <img src={resolveImage(v.cover_image) ?? ""} alt="" loading="lazy" width={64} height={48} className="h-12 w-16 rounded object-cover" />}
                         <div>
                           <div className="font-medium">{v.title}</div>
                           <div className="text-xs text-muted-foreground">{v.brand} · {v.year}</div>
