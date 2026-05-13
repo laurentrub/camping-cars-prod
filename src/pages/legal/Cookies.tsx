@@ -1,4 +1,12 @@
 import { SEO } from "@/components/SEO";
+import { LegalLayout, LegalSection, LegalTable, LegalNote } from "@/components/LegalLayout";
+
+const SECTIONS = [
+  { id: "definition", title: "Qu'est-ce qu'un cookie ?" },
+  { id: "utilises", title: "Cookies utilisés" },
+  { id: "gestion", title: "Gérer vos préférences" },
+  { id: "contact", title: "Contact" },
+];
 
 const Cookies = () => (
   <>
@@ -6,79 +14,74 @@ const Cookies = () => (
       title="Politique de gestion des cookies | Horizon Évasion"
       description="Informations sur l'utilisation des cookies sur le site Horizon Évasion."
     />
+    <LegalLayout title="Gestion des cookies" updatedAt="mai 2026" sections={SECTIONS}>
 
-    <section className="border-b border-border bg-secondary/40 py-10">
-      <div className="container-prose">
-        <span className="eyebrow">Informations légales</span>
-        <h1 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Politique de gestion des cookies</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Mise à jour : mai 2026</p>
-      </div>
-    </section>
-
-    <section className="container-prose py-12">
-      <div className="prose prose-neutral max-w-3xl">
-
-        <h2>1. Qu'est-ce qu'un cookie ?</h2>
+      <LegalSection id="definition" number="1" title="Qu'est-ce qu'un cookie ?">
         <p>
-          Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, smartphone, tablette)
-          lors de la visite d'un site web. Il permet au site de mémoriser des informations sur votre visite
-          (langue, préférences, identifiant de session…).
+          Un cookie est un petit fichier texte déposé sur votre terminal lors de la visite d'un site web.
+          Il permet au site de mémoriser des informations sur votre visite (langue, préférences, session…).
         </p>
+      </LegalSection>
 
-        <h2>2. Cookies utilisés sur ce site</h2>
+      <LegalSection id="utilises" number="2" title="Cookies utilisés sur ce site">
+        <p className="font-medium text-foreground">Cookies strictement nécessaires</p>
+        <p className="mt-1">Indispensables au fonctionnement du site. Ils ne nécessitent pas votre consentement.</p>
+        <LegalTable
+          headers={["Nom", "Finalité", "Durée"]}
+          rows={[
+            ["sb-auth-token", "Session d'authentification (espace admin)", "Session"],
+            ["he_favorites", "Sauvegarde des véhicules favoris (localStorage)", "Permanent"],
+          ]}
+        />
 
-        <h3>Cookies strictement nécessaires</h3>
-        <p>
-          Ces cookies sont indispensables au fonctionnement du site. Ils ne nécessitent pas votre consentement.
-        </p>
-        <table>
-          <thead><tr><th>Nom</th><th>Finalité</th><th>Durée</th></tr></thead>
-          <tbody>
-            <tr><td>sb-auth-token</td><td>Session d'authentification (espace admin)</td><td>Session</td></tr>
-            <tr><td>he_favorites</td><td>Sauvegarde des véhicules favoris en local</td><td>Permanent (localStorage)</td></tr>
-          </tbody>
-        </table>
+        <p className="mt-5 font-medium text-foreground">Cookies de performance</p>
+        <p className="mt-1">Déposés uniquement avec votre consentement pour mesurer l'audience.</p>
+        <LegalTable
+          headers={["Nom", "Finalité", "Durée"]}
+          rows={[
+            ["_ga", "Mesure d'audience (Google Analytics)", "13 mois"],
+            ["_gid", "Mesure d'audience (Google Analytics)", "24 heures"],
+          ]}
+        />
 
-        <h3>Cookies de performance et statistiques</h3>
-        <p>
-          Ces cookies nous permettent de mesurer l'audience du site et d'améliorer son fonctionnement.
-          Ils sont déposés uniquement avec votre consentement.
-        </p>
-        <table>
-          <thead><tr><th>Nom</th><th>Finalité</th><th>Durée</th></tr></thead>
-          <tbody>
-            <tr><td>_ga, _gid</td><td>Mesure d'audience (Google Analytics)</td><td>13 mois / 24h</td></tr>
-          </tbody>
-        </table>
-
-        <h3>Cookies tiers (carte interactive)</h3>
-        <p>
-          La carte OpenStreetMap intégrée sur la page Contact peut déposer des cookies lors de son affichage.
+        <p className="mt-5 font-medium text-foreground">Cookies tiers (carte interactive)</p>
+        <p className="mt-1">
+          La carte OpenStreetMap sur la page Contact peut déposer des cookies lors de son affichage.
           Ces cookies sont soumis à la politique de confidentialité d'OpenStreetMap Foundation.
         </p>
+      </LegalSection>
 
-        <h2>3. Gestion de vos préférences</h2>
-        <p>
-          Vous pouvez à tout moment modifier vos préférences de cookies via les paramètres de votre navigateur :
-        </p>
-        <ul>
-          <li><strong>Chrome :</strong> Paramètres → Confidentialité et sécurité → Cookies</li>
-          <li><strong>Firefox :</strong> Options → Vie privée et sécurité → Cookies et données de sites</li>
-          <li><strong>Safari :</strong> Préférences → Confidentialité</li>
-          <li><strong>Edge :</strong> Paramètres → Confidentialité, recherche et services</li>
-        </ul>
-        <p>
+      <LegalSection id="gestion" number="3" title="Gérer vos préférences">
+        <p>Vous pouvez modifier vos préférences via les paramètres de votre navigateur :</p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2">
+          {[
+            { browser: "Chrome", path: "Paramètres → Confidentialité et sécurité → Cookies" },
+            { browser: "Firefox", path: "Options → Vie privée et sécurité → Cookies" },
+            { browser: "Safari", path: "Préférences → Confidentialité" },
+            { browser: "Edge", path: "Paramètres → Confidentialité, recherche et services" },
+          ].map((b) => (
+            <div key={b.browser} className="rounded-lg border border-border bg-card p-3">
+              <p className="text-sm font-semibold text-foreground">{b.browser}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{b.path}</p>
+            </div>
+          ))}
+        </div>
+        <LegalNote>
           La désactivation des cookies strictement nécessaires peut altérer le fonctionnement du site.
-        </p>
+        </LegalNote>
+      </LegalSection>
 
-        <h2>4. Contact</h2>
+      <LegalSection id="contact" number="4" title="Contact">
         <p>
-          Pour toute question relative à notre utilisation des cookies, contactez-nous au 01 23 45 67 89
-          ou consultez notre <a href="/politique-confidentialite">Politique de confidentialité</a>.
+          Pour toute question relative à notre utilisation des cookies, contactez-nous au{" "}
+          <strong className="text-foreground">01 23 45 67 89</strong> ou consultez notre{" "}
+          <a href="/politique-confidentialite" className="font-medium text-accent hover:underline">
+            Politique de confidentialité
+          </a>.
         </p>
+      </LegalSection>
 
-      </div>
-    </section>
+    </LegalLayout>
   </>
 );
 

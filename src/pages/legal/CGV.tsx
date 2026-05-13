@@ -1,4 +1,17 @@
 import { SEO } from "@/components/SEO";
+import { LegalLayout, LegalSection, LegalNote } from "@/components/LegalLayout";
+
+const SECTIONS = [
+  { id: "objet", title: "Objet et champ d'application" },
+  { id: "prix", title: "Prix" },
+  { id: "commande", title: "Commande et acompte" },
+  { id: "retractation", title: "Droit de rétractation" },
+  { id: "livraison", title: "Livraison et transfert de propriété" },
+  { id: "garanties", title: "Garanties" },
+  { id: "paiement", title: "Modalités de paiement" },
+  { id: "reprise", title: "Reprise de véhicule" },
+  { id: "litiges", title: "Litiges et médiation" },
+];
 
 const CGV = () => (
   <>
@@ -6,132 +19,113 @@ const CGV = () => (
       title="Conditions Générales de Vente | Horizon Évasion"
       description="Conditions générales de vente applicables aux achats de véhicules et prestations chez Horizon Évasion."
     />
+    <LegalLayout title="Conditions Générales de Vente" updatedAt="mai 2026" sections={SECTIONS}>
 
-    <section className="border-b border-border bg-secondary/40 py-10">
-      <div className="container-prose">
-        <span className="eyebrow">Informations légales</span>
-        <h1 className="mt-3 font-serif text-3xl font-semibold md:text-4xl">Conditions Générales de Vente</h1>
-        <p className="mt-2 text-sm text-muted-foreground">Mise à jour : mai 2026</p>
-      </div>
-    </section>
+      <LegalSection id="objet" number="1" title="Objet et champ d'application">
+        <p>
+          Les présentes CGV régissent les relations contractuelles entre{" "}
+          <strong className="text-foreground">Horizon Évasion SAS</strong> (« le Vendeur ») et tout acheteur
+          (« l'Acheteur ») pour toute vente de véhicule de loisirs (neuf ou d'occasion) et toute prestation
+          associée (entretien, accessoires, financement, reprise).
+        </p>
+        <p>Toute commande implique l'acceptation pleine et entière des présentes CGV.</p>
+      </LegalSection>
 
-    <section className="container-prose py-12">
-      <div className="prose prose-neutral max-w-3xl">
+      <LegalSection id="prix" number="2" title="Prix">
+        <p>
+          Les prix affichés sont exprimés en euros <strong className="text-foreground">toutes taxes comprises (TTC)</strong>,
+          TVA au taux en vigueur. Horizon Évasion se réserve le droit de les modifier à tout moment ;
+          les prix applicables sont ceux en vigueur à la date de la commande.
+        </p>
+      </LegalSection>
 
-        <h2>1. Objet et champ d'application</h2>
+      <LegalSection id="commande" number="3" title="Commande et acompte">
         <p>
-          Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre
-          <strong> Horizon Évasion SAS</strong> (ci-après « le Vendeur ») et tout acheteur professionnel
-          ou particulier (ci-après « l'Acheteur ») pour toute vente de véhicule de loisirs (camping-car neuf
-          ou d'occasion) et toute prestation associée (entretien, accessoires, financement, reprise).
+          Toute vente est formalisée par la signature d'un bon de commande précisant la désignation du véhicule,
+          le prix TTC, les conditions de paiement et la date de livraison prévisionnelle.
         </p>
-        <p>
-          Toute commande implique l'acceptation pleine et entière des présentes CGV, qui prévalent sur tout
-          autre document de l'Acheteur.
-        </p>
+        <LegalNote>
+          Un acompte est exigible à la signature. Il est retenu en cas d'annulation imputable à l'Acheteur,
+          sauf cas de force majeure ou exercice du droit de rétractation dans les délais légaux.
+        </LegalNote>
+      </LegalSection>
 
-        <h2>2. Prix</h2>
-        <p>
-          Les prix affichés sur le site et dans nos locaux sont exprimés en euros toutes taxes comprises (TTC).
-          Ils incluent la TVA au taux en vigueur au jour de la commande. Horizon Évasion se réserve le droit
-          de modifier ses prix à tout moment ; les prix applicables sont ceux en vigueur à la date de la commande.
-        </p>
-        <p>
-          Les prix des véhicules d'occasion sont fixés librement et ne sont pas soumis à la réglementation
-          sur les prix imposés.
-        </p>
-
-        <h2>3. Commande et bon de commande</h2>
-        <p>
-          Toute vente est formalisée par la signature d'un bon de commande précisant : la désignation du
-          véhicule, le prix TTC, les conditions de paiement, la date de livraison prévisionnelle et, le
-          cas échéant, les modalités de reprise.
-        </p>
-        <p>
-          Un acompte dont le montant est précisé sur le bon de commande est exigible à la signature.
-          Cet acompte est retenu en cas d'annulation imputable à l'Acheteur, sauf cas de force majeure
-          ou exercice du droit de rétractation dans les délais légaux.
-        </p>
-
-        <h2>4. Droit de rétractation</h2>
+      <LegalSection id="retractation" number="4" title="Droit de rétractation">
         <p>
           Conformément aux articles L.221-18 et suivants du Code de la consommation, l'Acheteur particulier
-          bénéficie d'un délai de rétractation de <strong>14 jours</strong> à compter de la signature du
-          bon de commande pour les ventes conclues hors établissement ou à distance.
+          dispose d'un délai de <strong className="text-foreground">14 jours</strong> à compter de la signature
+          du bon de commande pour les ventes conclues hors établissement ou à distance.
         </p>
-        <p>
+        <LegalNote>
           Ce droit ne s'applique pas aux ventes conclues dans les locaux du Vendeur à la suite d'une visite
           physique du véhicule.
-        </p>
+        </LegalNote>
+      </LegalSection>
 
-        <h2>5. Livraison et transfert de propriété</h2>
+      <LegalSection id="livraison" number="5" title="Livraison et transfert de propriété">
         <p>
-          La livraison du véhicule s'effectue dans nos locaux, après règlement intégral du prix. Le transfert
-          de propriété intervient au moment du paiement complet. Le transfert des risques intervient à la
-          remise des clés.
+          La livraison s'effectue dans nos locaux, après règlement intégral du prix. Le transfert de propriété
+          intervient au moment du paiement complet ; le transfert des risques à la remise des clés.
         </p>
         <p>
-          Lors de la livraison, une prise en main complète du véhicule est réalisée par un conseiller
-          (fonctionnement des équipements, documents, entretien).
+          Une prise en main complète du véhicule est réalisée par un conseiller lors de la livraison.
         </p>
+      </LegalSection>
 
-        <h2>6. Garanties</h2>
-        <h3>6.1 Véhicules neufs</h3>
+      <LegalSection id="garanties" number="6" title="Garanties">
+        <p className="font-medium text-foreground">Véhicules neufs</p>
         <p>
-          Les véhicules neufs bénéficient de la garantie constructeur (conditions et durée variables selon
-          la marque) ainsi que de la garantie légale de conformité (2 ans) et de la garantie contre les
-          vices cachés prévues par le Code civil.
+          Garantie constructeur (conditions variables selon la marque), garantie légale de conformité de
+          2 ans et garantie contre les vices cachés prévues par le Code civil.
         </p>
-        <h3>6.2 Véhicules d'occasion</h3>
+        <p className="mt-4 font-medium text-foreground">Véhicules d'occasion</p>
         <p>
-          Les véhicules d'occasion bénéficient d'une garantie contractuelle de <strong>6 mois minimum</strong>
-          (pièces et main d'œuvre), sauf indication contraire sur le bon de commande. La garantie légale
-          contre les vices cachés s'applique également.
+          Garantie contractuelle de <strong className="text-foreground">6 mois minimum</strong> (pièces et
+          main d'œuvre), sauf indication contraire sur le bon de commande. La garantie légale contre les
+          vices cachés s'applique également.
         </p>
-        <p>
+        <LegalNote>
           La garantie ne couvre pas l'usure normale, les dommages liés à un défaut d'entretien, une
           utilisation anormale ou une modification non autorisée du véhicule.
-        </p>
+        </LegalNote>
+      </LegalSection>
 
-        <h2>7. Modalités de paiement</h2>
-        <p>Les modes de paiement acceptés sont :</p>
-        <ul>
-          <li>Virement bancaire</li>
-          <li>Chèque de banque</li>
-          <li>Financement (sous réserve d'accord de l'organisme prêteur)</li>
-          <li>Espèces dans la limite légale en vigueur</li>
+      <LegalSection id="paiement" number="7" title="Modalités de paiement">
+        <p>Les modes de paiement acceptés :</p>
+        <ul className="mt-2 space-y-1 pl-4">
+          {["Virement bancaire", "Chèque de banque", "Financement (sous réserve d'accord)", "Espèces dans la limite légale en vigueur"].map((m) => (
+            <li key={m} className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+              {m}
+            </li>
+          ))}
         </ul>
-        <p>
-          Le financement est soumis à l'acceptation de l'organisme de crédit partenaire. En cas de refus,
-          la vente est résolue de plein droit et l'acompte restitué.
-        </p>
+        <LegalNote>
+          En cas de refus de financement par l'organisme prêteur, la vente est résolue de plein droit
+          et l'acompte restitué.
+        </LegalNote>
+      </LegalSection>
 
-        <h2>8. Reprise de véhicule</h2>
+      <LegalSection id="reprise" number="8" title="Reprise de véhicule">
         <p>
-          La reprise d'un véhicule est subordonnée à une inspection physique. La valeur de reprise estimée
-          en ligne est indicative et ne vaut pas offre ferme. L'offre définitive est formulée après inspection.
-          En cas d'accord, la reprise est formalisée sur le bon de commande et déduite du prix du véhicule acquis.
+          La valeur de reprise estimée en ligne est indicative et ne vaut pas offre ferme. L'offre définitive
+          est formulée après inspection physique du véhicule. En cas d'accord, la reprise est formalisée sur
+          le bon de commande et déduite du prix du véhicule acquis.
         </p>
+      </LegalSection>
 
-        <h2>9. Données personnelles</h2>
-        <p>
-          Les données collectées lors de la commande sont traitées conformément à notre
-          <a href="/politique-confidentialite"> Politique de confidentialité (RGPD)</a>.
-        </p>
-
-        <h2>10. Litiges et médiation</h2>
+      <LegalSection id="litiges" number="9" title="Litiges et médiation">
         <p>
           En cas de litige, l'Acheteur s'adressera en priorité à Horizon Évasion pour une résolution amiable.
-          À défaut d'accord, l'Acheteur particulier peut recourir gratuitement au médiateur de la consommation
-          compétent (coordonnées disponibles sur demande).
+          À défaut, l'Acheteur particulier peut recourir gratuitement au médiateur de la consommation compétent.
         </p>
         <p>
           Les présentes CGV sont soumises au droit français. Tout litige relève de la compétence des tribunaux
           de Bordeaux.
         </p>
+      </LegalSection>
 
-      </div>
-    </section>
+    </LegalLayout>
   </>
 );
 
