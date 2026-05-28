@@ -77,14 +77,7 @@ const Contact = () => (
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-border shadow-soft">
-            <iframe
-              title="Plan d'accès"
-              src="https://www.openstreetmap.org/export/embed.html?bbox=-0.6%2C44.82%2C-0.55%2C44.86&layer=mapnik"
-              className="h-[320px] w-full"
-              loading="lazy"
-            />
-          </div>
+
         </div>
       </div>
     </section>
