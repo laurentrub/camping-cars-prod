@@ -125,6 +125,27 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
+    if (action === "create_member") {
+      const { email, password, role } = body as { email?: string; password?: string; role?: string };
+      if (!email || !password) return json({ error: "Email et mot de passe requis" }, 400);
+      if (!["admin", "team"].includes(role ?? "")) return json({ error: "Rôle invalide (admin ou team)" }, 400);
+      if (password.length < 8) return json({ error: "Mot de passe trop court (8 caractères minimum)" }, 400);
+
+      const { data: created, error: createErr } = await admin.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true,
+      });
+      if (createErr) return json({ error: createErr.message }, 500);
+
+      const { error: roleErr } = await admin
+        .from("user_roles")
+        .insert({ user_id: created.user.id, role });
+      if (roleErr) return json({ error: roleErr.message }, 500);
+
+      return json({ ok: true, user_id: created.user.id });
+    }
+
     return json({ error: "Action inconnue" }, 400);
   } catch (e) {
     return json({ error: (e as Error).message }, 500);
