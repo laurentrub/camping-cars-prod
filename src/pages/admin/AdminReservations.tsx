@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { Mail, Phone, Calendar, Trash2, CheckCircle2, XCircle, FileText, CalendarCheck, PhoneCall, Clock, History, MessageSquarePlus, Filter, X, CheckSquare, Square } from "lucide-react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -24,6 +25,7 @@ const statusLabel = (s?: string | null) =>
 const slotLabel = (s: string | null) => s === "matin" ? "Matin" : s === "apres_midi" ? "Après-midi" : "—";
 
 const AdminReservations = () => {
+  const { isAdmin, isTeam } = useAuth();
   const [items, setItems] = useState<any[]>([]);
   const [filter, setFilter] = useState<string>("all");
   const [search, setSearch] = useState("");
@@ -294,7 +296,9 @@ const AdminReservations = () => {
 
   return (
     <div>
-      <h1 className="font-serif text-3xl font-semibold">Demandes de visite</h1>
+      <h1 className="font-serif text-3xl font-semibold">
+        {isTeam && !isAdmin ? "Mes demandes de visite" : "Demandes de visite"}
+      </h1>
       <p className="mt-1 text-sm text-muted-foreground">
         {items.length} demande{items.length > 1 ? "s" : ""} au total. Workflow :
         <span className="ml-1 font-medium text-foreground">À traiter → Contact effectué → Visite confirmée → Visite réalisée</span>.

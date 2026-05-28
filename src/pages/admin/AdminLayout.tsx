@@ -7,7 +7,7 @@ import { LayoutDashboard, Truck, Inbox, Repeat, Users, LogOut, ExternalLink, Boo
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
-const NAV = [
+const NAV_ADMIN = [
   { to: "/admin", label: "Tableau de bord", icon: LayoutDashboard, end: true },
   { to: "/admin/vehicles", label: "Véhicules", icon: Truck },
   { to: "/admin/reservations", label: "Réservations", icon: BookmarkCheck },
@@ -17,8 +17,13 @@ const NAV = [
   { to: "/admin/settings", label: "Paramètres", icon: Settings },
 ];
 
+const NAV_TEAM = [
+  { to: "/admin/vehicles", label: "Mes véhicules", icon: Truck },
+  { to: "/admin/reservations", label: "Mes réservations", icon: BookmarkCheck },
+];
+
 const AdminLayout = () => {
-  const { user, isAdmin, loading } = useAuth();
+  const { user, isAdmin, isTeam, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,13 +38,13 @@ const AdminLayout = () => {
 
   if (loading) return <div className="p-10">Chargement…</div>;
   if (!user) { navigate("/admin/auth"); return null; }
-  if (!isAdmin) {
+  if (!isAdmin && !isTeam) {
     return (
       <div className="container-prose py-20 text-center">
-        <h1 className="font-serif text-2xl font-semibold">Accès réservé aux administrateurs</h1>
+        <h1 className="font-serif text-2xl font-semibold">Accès non autorisé</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Votre compte ({user.email}) n'a pas le rôle administrateur.<br />
-          Demandez à un admin existant d'ajouter votre user_id dans la table <code>user_roles</code>.
+          Votre compte ({user.email}) n'a pas les droits nécessaires.<br />
+          Contactez un administrateur.
         </p>
         <p className="mt-4 break-all text-xs text-muted-foreground">User ID : {user.id}</p>
         <Button variant="elegant" className="mt-6" onClick={async () => { await supabase.auth.signOut(); navigate("/"); }}>
@@ -49,11 +54,14 @@ const AdminLayout = () => {
     );
   }
 
+  const nav = isAdmin ? NAV_ADMIN : NAV_TEAM;
+  const homeLink = isAdmin ? "/admin" : "/admin/vehicles";
+
   return (
     <div className="flex min-h-screen bg-secondary/30">
       <aside className="hidden w-64 flex-col border-r border-border bg-card md:flex">
         <div className="border-b border-border p-5">
-          <Link to="/admin" className="flex items-center gap-2">
+          <Link to={homeLink} className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif">H</div>
             <div>
               <div className="font-serif text-base font-semibold">Horizon</div>
@@ -62,7 +70,7 @@ const AdminLayout = () => {
           </Link>
         </div>
         <nav className="flex-1 space-y-1 p-3">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -99,7 +107,7 @@ const AdminLayout = () => {
             </button>
           </div>
           <nav className="flex gap-1 overflow-x-auto border-t border-border px-2 py-2">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <NavLink key={item.to} to={item.to} end={item.end}
                 className={({ isActive }) => cn(
                   "shrink-0 rounded-md px-3 py-1.5 text-xs font-medium",

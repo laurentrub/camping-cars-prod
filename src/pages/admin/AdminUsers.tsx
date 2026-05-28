@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { Loader2, Shield, ShieldOff, RefreshCw, Search } from "lucide-react";
+import { Loader2, Shield, ShieldOff, RefreshCw, Search, Users } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
 type AdminUser = {
@@ -40,8 +40,8 @@ const AdminUsers = () => {
   useEffect(() => { load(); }, []);
 
   const toggleAdmin = async (target: AdminUser) => {
-    const isAdmin = target.roles.includes("admin");
-    const action = isAdmin ? "demote" : "promote";
+    const hasAdmin = target.roles.includes("admin");
+    const action = hasAdmin ? "demote" : "promote";
     setBusyId(target.id);
     const { data, error } = await supabase.functions.invoke("admin-users", {
       body: { action, user_id: target.id },
@@ -51,7 +51,23 @@ const AdminUsers = () => {
       toast.error((data as any)?.error ?? error?.message ?? "Action impossible");
       return;
     }
-    toast.success(isAdmin ? "Droits admin retirés" : "Promu administrateur");
+    toast.success(hasAdmin ? "Droits admin retirés" : "Promu administrateur");
+    load();
+  };
+
+  const toggleTeam = async (target: AdminUser) => {
+    const hasTeam = target.roles.includes("team");
+    const action = hasTeam ? "demote_team" : "promote_team";
+    setBusyId(target.id);
+    const { data, error } = await supabase.functions.invoke("admin-users", {
+      body: { action, user_id: target.id },
+    });
+    setBusyId(null);
+    if (error || (data as any)?.error) {
+      toast.error((data as any)?.error ?? error?.message ?? "Action impossible");
+      return;
+    }
+    toast.success(hasTeam ? "Rôle équipe retiré" : "Ajouté à l'équipe");
     load();
   };
 
@@ -124,37 +140,66 @@ const AdminUsers = () => {
                       {isSelf && <div className="text-[10px] uppercase tracking-wider text-accent">Vous</div>}
                     </TableCell>
                     <TableCell>
-                      {isAdmin ? (
-                        <Badge className="bg-gradient-gold text-primary-foreground">Admin</Badge>
-                      ) : (
-                        <Badge variant="secondary">Utilisateur</Badge>
-                      )}
+                      <div className="flex flex-wrap gap-1">
+                        {isAdmin ? (
+                          <Badge className="bg-gradient-gold text-primary-foreground">Admin</Badge>
+                        ) : u.roles.includes("team") ? (
+                          <Badge className="bg-sky-100 text-sky-900">Équipe</Badge>
+                        ) : (
+                          <Badge variant="secondary">Utilisateur</Badge>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">{fmt(u.created_at)}</TableCell>
                     <TableCell className="text-sm text-muted-foreground">{fmt(u.last_sign_in_at)}</TableCell>
                     <TableCell className="text-right">
-                      {isAdmin ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleAdmin(u)}
-                          disabled={isSelf || busyId === u.id}
-                          title={isSelf ? "Vous ne pouvez pas vous rétrograder" : ""}
-                        >
-                          {busyId === u.id ? <Loader2 className="animate-spin" /> : <ShieldOff />}
-                          Retirer admin
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="gold"
-                          size="sm"
-                          onClick={() => toggleAdmin(u)}
-                          disabled={busyId === u.id}
-                        >
-                          {busyId === u.id ? <Loader2 className="animate-spin" /> : <Shield />}
-                          Promouvoir admin
-                        </Button>
-                      )}
+                      <div className="flex justify-end gap-2">
+                        {isAdmin ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => toggleAdmin(u)}
+                            disabled={isSelf || busyId === u.id}
+                            title={isSelf ? "Vous ne pouvez pas vous rétrograder" : ""}
+                          >
+                            {busyId === u.id ? <Loader2 className="animate-spin" /> : <ShieldOff />}
+                            Retirer admin
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="gold"
+                            size="sm"
+                            onClick={() => toggleAdmin(u)}
+                            disabled={busyId === u.id}
+                          >
+                            {busyId === u.id ? <Loader2 className="animate-spin" /> : <Shield />}
+                            Promouvoir admin
+                          </Button>
+                        )}
+                        {!isAdmin && (
+                          u.roles.includes("team") ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleTeam(u)}
+                              disabled={busyId === u.id}
+                            >
+                              {busyId === u.id ? <Loader2 className="animate-spin" /> : <Users />}
+                              Retirer équipe
+                            </Button>
+                          ) : (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => toggleTeam(u)}
+                              disabled={busyId === u.id}
+                            >
+                              {busyId === u.id ? <Loader2 className="animate-spin" /> : <Users />}
+                              Ajouter équipe
+                            </Button>
+                          )
+                        )}
+                      </div>
                     </TableCell>
                   </TableRow>
                 );

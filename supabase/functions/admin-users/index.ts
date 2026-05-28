@@ -103,6 +103,28 @@ Deno.serve(async (req) => {
       return json({ ok: true });
     }
 
+    if (action === "promote_team") {
+      const target = body.user_id as string;
+      if (!target) return json({ error: "user_id manquant" }, 400);
+      const { error } = await admin
+        .from("user_roles")
+        .insert({ user_id: target, role: "team" });
+      if (error && !error.message.includes("duplicate")) return json({ error: error.message }, 500);
+      return json({ ok: true });
+    }
+
+    if (action === "demote_team") {
+      const target = body.user_id as string;
+      if (!target) return json({ error: "user_id manquant" }, 400);
+      const { error } = await admin
+        .from("user_roles")
+        .delete()
+        .eq("user_id", target)
+        .eq("role", "team");
+      if (error) return json({ error: error.message }, 500);
+      return json({ ok: true });
+    }
+
     return json({ error: "Action inconnue" }, 400);
   } catch (e) {
     return json({ error: (e as Error).message }, 500);

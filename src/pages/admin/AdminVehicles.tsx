@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -45,6 +46,7 @@ const empty = {
 type FormState = typeof empty;
 
 const AdminVehicles = () => {
+  const { user, isAdmin, isTeam } = useAuth();
   const [list, setList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -52,11 +54,15 @@ const AdminVehicles = () => {
 
   const load = async () => {
     setLoading(true);
-    const { data } = await supabase.from("vehicles").select("*").order("created_at", { ascending: false });
+    let query = supabase.from("vehicles").select("*").order("created_at", { ascending: false });
+    if (isTeam && !isAdmin && user) {
+      query = query.eq("created_by", user.id);
+    }
+    const { data } = await query;
     setList(data ?? []);
     setLoading(false);
   };
-  useEffect(() => { load(); }, []);
+  useEffect(() => { if (user !== undefined) load(); }, [user, isAdmin, isTeam]);
 
   const startEdit = (v: any) => {
     setForm({
@@ -88,7 +94,7 @@ const AdminVehicles = () => {
     };
     const { error } = form.id
       ? await supabase.from("vehicles").update(payload).eq("id", form.id)
-      : await supabase.from("vehicles").insert(payload);
+      : await supabase.from("vehicles").insert({ ...payload, created_by: user?.id ?? null });
     if (error) return toast.error(error.message);
     toast.success(form.id ? "Véhicule mis à jour" : "Véhicule ajouté");
     setOpen(false);
