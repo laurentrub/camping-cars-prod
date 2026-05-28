@@ -7,11 +7,11 @@ export function SiteFooter() {
       <div className="container-prose grid gap-10 py-16 md:grid-cols-4">
         <div>
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground font-serif text-lg">H</div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground font-serif text-xs font-bold">ST</div>
             <div className="font-serif text-lg font-semibold">ST Services</div>
           </div>
           <p className="mt-4 text-sm text-primary-foreground/70 leading-relaxed">
-            Concessionnaire spécialiste du camping-car neuf et d'occasion depuis 1998. Vente, reprise, financement et SAV.
+            Spécialiste camping-car en Charente. Achat, vente, dépôt-vente de véhicules neufs et d'occasion.
           </p>
         </div>
 
