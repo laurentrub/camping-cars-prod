@@ -56,8 +56,8 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="ST Services — Camping-cars neufs & d'occasion"
-        description="Concessionnaire premium de camping-cars. Vente, reprise, financement et entretien. Plus de 80 véhicules en stock."
+        title="ST Services — Spécialiste camping-car en Charente"
+        description="Achat, vente et dépôt-vente de camping-cars neufs et d'occasion en Charente. Conseil personnalisé, sélection rigoureuse."
         jsonLd={jsonLd}
       />
 
@@ -75,7 +75,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-foreground/30" />
         <div className="container-prose relative z-10 flex min-h-[88vh] flex-col justify-center pb-20 pt-32 text-primary-foreground">
           <div className="max-w-2xl animate-fade-in-up">
-            <span className="eyebrow !text-accent">Concessionnaire premium · depuis 1998</span>
+            <span className="eyebrow !text-accent">Spécialiste camping-car en Charente</span>
             <h1 className="mt-4 font-serif text-4xl font-semibold leading-[1.05] text-balance text-primary-foreground md:text-6xl lg:text-7xl">
               Partez à l'aventure<br />
               <span className="italic text-accent">en toute liberté</span>.
@@ -92,9 +92,9 @@ const Index = () => {
               </Button>
             </div>
             <div className="mt-10 grid max-w-lg grid-cols-3 gap-6 border-t border-primary-foreground/20 pt-6 text-center">
-              <div><div className="font-serif text-2xl font-semibold text-accent">25+</div><div className="text-xs text-primary-foreground/70">années d'expertise</div></div>
               <div><div className="font-serif text-2xl font-semibold text-accent">80+</div><div className="text-xs text-primary-foreground/70">véhicules en stock</div></div>
-              <div><div className="font-serif text-2xl font-semibold text-accent">4 800</div><div className="text-xs text-primary-foreground/70">clients heureux</div></div>
+              <div><div className="font-serif text-2xl font-semibold text-accent">100%</div><div className="text-xs text-primary-foreground/70">indépendant</div></div>
+              <div><div className="font-serif text-2xl font-semibold text-accent">4,9★</div><div className="text-xs text-primary-foreground/70">satisfaction client</div></div>
             </div>
           </div>
         </div>
