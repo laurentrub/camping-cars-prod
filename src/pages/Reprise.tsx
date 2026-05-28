@@ -223,7 +223,7 @@ const Reprise = () => {
     return (
       <>
         <SEO
-          title="Demande de reprise envoyée | Horizon Évasion"
+          title="Demande de reprise envoyée | ST Services"
           description="Votre demande de reprise a bien été enregistrée."
         />
         <section className="container-prose flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
@@ -253,7 +253,7 @@ const Reprise = () => {
   return (
     <>
       <SEO
-        title="Reprise de camping-car — Estimation gratuite en ligne | Horizon Évasion"
+        title="Reprise de camping-car — Estimation gratuite en ligne | ST Services"
         description="Faites estimer votre camping-car en quelques minutes. Reprise transparente, paiement sous 48h, tous types et toutes marques acceptés."
       />
 

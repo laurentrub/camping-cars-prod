@@ -16,7 +16,7 @@ const SERVICES = [
 const Services = () => (
   <>
     <SEO
-      title="Nos services — Vente, reprise, financement & SAV | Horizon Évasion"
+      title="Nos services — Vente, reprise, financement & SAV | ST Services"
       description="Vente neuve et occasion, reprise de votre camping-car, financement sur mesure, garantie et atelier SAV intégré."
     />
     <section className="relative overflow-hidden bg-gradient-deep py-20 text-primary-foreground">

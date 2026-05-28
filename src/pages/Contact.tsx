@@ -6,7 +6,7 @@ import { Phone, MapPin, Clock } from "lucide-react";
 const Contact = () => (
   <>
     <SEO
-      title="Contact — Horizon Évasion | Concessionnaire camping-car Bordeaux"
+      title="Contact — ST Services | Concessionnaire camping-car"
       description="Contactez nos conseillers pour votre projet camping-car. Téléphone, adresse et horaires."
     />
 
@@ -40,7 +40,7 @@ const Contact = () => (
             </div>
             <h2 className="mt-4 font-serif text-lg font-semibold">Notre adresse</h2>
             <address className="mt-1 not-italic text-sm text-foreground">
-              25 route de l'Aventure<br />33000 Bordeaux<br />France
+              4 Rue des Portes<br />16130 Saint-Fort-sur-le-Né<br />France
             </address>
           </div>
 

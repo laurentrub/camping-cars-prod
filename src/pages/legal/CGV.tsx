@@ -16,15 +16,15 @@ const SECTIONS = [
 const CGV = () => (
   <>
     <SEO
-      title="Conditions Générales de Vente | Horizon Évasion"
-      description="Conditions générales de vente applicables aux achats de véhicules et prestations chez Horizon Évasion."
+      title="Conditions Générales de Vente | ST Services"
+      description="Conditions générales de vente applicables aux achats de véhicules et prestations chez ST Services."
     />
     <LegalLayout title="Conditions Générales de Vente" updatedAt="mai 2026" sections={SECTIONS}>
 
       <LegalSection id="objet" number="1" title="Objet et champ d'application">
         <p>
           Les présentes CGV régissent les relations contractuelles entre{" "}
-          <strong className="text-foreground">Horizon Évasion SAS</strong> (« le Vendeur ») et tout acheteur
+          <strong className="text-foreground">ST Services</strong> (« le Vendeur ») et tout acheteur
           (« l'Acheteur ») pour toute vente de véhicule de loisirs (neuf ou d'occasion) et toute prestation
           associée (entretien, accessoires, financement, reprise).
         </p>
@@ -34,7 +34,7 @@ const CGV = () => (
       <LegalSection id="prix" number="2" title="Prix">
         <p>
           Les prix affichés sont exprimés en euros <strong className="text-foreground">toutes taxes comprises (TTC)</strong>,
-          TVA au taux en vigueur. Horizon Évasion se réserve le droit de les modifier à tout moment ;
+          TVA au taux en vigueur. ST Services se réserve le droit de les modifier à tout moment ;
           les prix applicables sont ceux en vigueur à la date de la commande.
         </p>
       </LegalSection>
@@ -116,12 +116,12 @@ const CGV = () => (
 
       <LegalSection id="litiges" number="9" title="Litiges et médiation">
         <p>
-          En cas de litige, l'Acheteur s'adressera en priorité à Horizon Évasion pour une résolution amiable.
+          En cas de litige, l'Acheteur s'adressera en priorité à ST Services pour une résolution amiable.
           À défaut, l'Acheteur particulier peut recourir gratuitement au médiateur de la consommation compétent.
         </p>
         <p>
           Les présentes CGV sont soumises au droit français. Tout litige relève de la compétence des tribunaux
-          de Bordeaux.
+          d'Angoulême.
         </p>
       </LegalSection>
 

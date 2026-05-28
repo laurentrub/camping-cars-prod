@@ -11,8 +11,8 @@ const SECTIONS = [
 const Cookies = () => (
   <>
     <SEO
-      title="Politique de gestion des cookies | Horizon Évasion"
-      description="Informations sur l'utilisation des cookies sur le site Horizon Évasion."
+      title="Politique de gestion des cookies | ST Services"
+      description="Informations sur l'utilisation des cookies sur le site ST Services."
     />
     <LegalLayout title="Gestion des cookies" updatedAt="mai 2026" sections={SECTIONS}>
 

@@ -13,12 +13,12 @@ const VALUES = [
 const About = () => (
   <>
     <SEO
-      title="À propos — Concessionnaire camping-car depuis 1998 | Horizon Évasion"
-      description="Découvrez l'histoire d'Horizon Évasion, concessionnaire indépendant spécialisé en camping-cars premium depuis plus de 25 ans."
+      title="À propos — Concessionnaire camping-car depuis 1998 | ST Services"
+      description="Découvrez l'histoire d'ST Services, concessionnaire indépendant spécialisé en camping-cars premium depuis plus de 25 ans."
     />
 
     <section className="relative overflow-hidden">
-      <img src={showroom} alt="Showroom Horizon Évasion" width={1920} height={1080} fetchPriority="high" className="h-[50vh] w-full object-cover" />
+      <img src={showroom} alt="Showroom ST Services" width={1920} height={1080} fetchPriority="high" className="h-[50vh] w-full object-cover" />
       <div className="absolute inset-0 bg-gradient-hero" />
       <div className="absolute inset-0 flex items-end pb-16">
         <div className="container-prose text-primary-foreground">
@@ -42,7 +42,7 @@ const About = () => (
             Tout commence en 1998 quand Jean Bernard, mécanicien passionné, ouvre un petit atelier de réparation de camping-cars en Gironde. Très vite, la qualité du service attire les passionnés de la région. En 2005, son fils Antoine rejoint l'aventure et ouvre la première activité de vente.
           </p>
           <p className="mt-3 text-muted-foreground leading-relaxed">
-            Aujourd'hui, Horizon Évasion c'est une équipe de 18 personnes, un showroom de 2 000 m² et un atelier de 800 m². Nous restons fidèles à nos valeurs : conseil honnête, qualité irréprochable et accompagnement sur le long terme.
+            Aujourd'hui, ST Services c'est une équipe de 18 personnes, un showroom de 2 000 m² et un atelier de 800 m². Nous restons fidèles à nos valeurs : conseil honnête, qualité irréprochable et accompagnement sur le long terme.
           </p>
           <div className="mt-8 grid grid-cols-3 gap-6 border-t border-border pt-6">
             <div><div className="font-serif text-3xl font-semibold text-accent">25+</div><div className="text-xs text-muted-foreground">années</div></div>

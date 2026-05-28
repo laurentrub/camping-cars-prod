@@ -71,7 +71,7 @@ const Reservation = () => {
 
   return (
     <>
-      <SEO title={`Réserver une visite — ${vehicle.title} | Horizon Évasion`} description={`Réservez une visite pour ${vehicle.title}. Demande sous réserve de validation par notre équipe.`} />
+      <SEO title={`Réserver une visite — ${vehicle.title} | ST Services`} description={`Réservez une visite pour ${vehicle.title}. Demande sous réserve de validation par notre équipe.`} />
       <section className="border-b border-border bg-secondary/40 py-6">
         <div className="container-prose">
           <Link to={`/vehicule/${vehicle.slug}`} className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-accent">

@@ -10,7 +10,7 @@ const SECTIONS = [
       { to: "/catalogue", label: "Catalogue des camping-cars" },
       { to: "/services", label: "Nos services" },
       { to: "/reprise", label: "Reprise de votre véhicule" },
-      { to: "/a-propos", label: "À propos d'Horizon Évasion" },
+      { to: "/a-propos", label: "À propos d'ST Services" },
       { to: "/contact", label: "Contact & accès" },
       { to: "/favoris", label: "Mes favoris" },
     ],
@@ -38,8 +38,8 @@ const SECTIONS = [
 const PlanDuSite = () => (
   <>
     <SEO
-      title="Plan du site | Horizon Évasion"
-      description="Retrouvez toutes les pages du site Horizon Évasion, concessionnaire de camping-cars à Bordeaux."
+      title="Plan du site | ST Services"
+      description="Retrouvez toutes les pages du site ST Services, concessionnaire de camping-cars."
     />
 
     <section className="border-b border-border bg-secondary/40 py-10">

@@ -41,13 +41,13 @@ const Index = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "AutoDealer",
-    name: "Horizon Évasion",
+    name: "ST Services",
     description: "Vendeur de camping-cars neufs et d'occasion. Vente, reprise, financement, entretien.",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "25 route de l'Aventure",
-      addressLocality: "Bordeaux",
-      postalCode: "33000",
+      streetAddress: "4 Rue des Portes",
+      addressLocality: "Saint-Fort-sur-le-Né",
+      postalCode: "16130",
       addressCountry: "FR",
     },
     telephone: "+33123456789",
@@ -56,7 +56,7 @@ const Index = () => {
   return (
     <>
       <SEO
-        title="Horizon Évasion — Camping-cars neufs & d'occasion"
+        title="ST Services — Camping-cars neufs & d'occasion"
         description="Concessionnaire premium de camping-cars. Vente, reprise, financement et entretien. Plus de 80 véhicules en stock."
         jsonLd={jsonLd}
       />

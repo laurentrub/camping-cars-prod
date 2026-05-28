@@ -15,7 +15,7 @@ const Favorites = () => {
   return (
     <>
       <SEO
-        title="Mes favoris | Horizon Évasion"
+        title="Mes favoris | ST Services"
         description="Retrouvez les camping-cars que vous avez sauvegardés."
       />
 

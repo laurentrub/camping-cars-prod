@@ -65,7 +65,7 @@ const Catalogue = () => {
   return (
     <>
       <SEO
-        title="Catalogue camping-cars neufs & occasion | Horizon Évasion"
+        title="Catalogue camping-cars neufs & occasion | ST Services"
         description="Découvrez notre sélection de camping-cars : fourgons, profilés, intégraux et capucines. Filtrez par prix, marque, places."
       />
 

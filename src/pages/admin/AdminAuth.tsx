@@ -83,7 +83,7 @@ const AdminAuth = () => {
 
   return (
     <>
-      <SEO title="Connexion admin | Horizon Évasion" description="Espace administrateur" />
+      <SEO title="Connexion admin | ST Services" description="Espace administrateur" />
       <div className="container-prose py-20">
         <div className="mx-auto max-w-md rounded-xl border border-border bg-card p-8 shadow-card">
           <h1 className="font-serif text-2xl font-semibold">Espace administrateur</h1>

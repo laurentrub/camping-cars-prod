@@ -64,7 +64,7 @@ const AdminLayout = () => {
           <Link to={homeLink} className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif">H</div>
             <div>
-              <div className="font-serif text-base font-semibold">Horizon</div>
+              <div className="font-serif text-base font-semibold">ST Services</div>
               <div className="text-[10px] uppercase tracking-wider text-accent">Admin</div>
             </div>
           </Link>

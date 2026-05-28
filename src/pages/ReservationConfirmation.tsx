@@ -48,7 +48,7 @@ const ReservationConfirmation = () => {
 
   return (
     <>
-      <SEO title={`Demande de visite ${res.reference} | Horizon Évasion`} description="Confirmation de votre demande de visite. Sous réserve de validation par notre équipe." />
+      <SEO title={`Demande de visite ${res.reference} | ST Services`} description="Confirmation de votre demande de visite. Sous réserve de validation par notre équipe." />
       <section className="container-prose py-12">
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center justify-center">
@@ -91,7 +91,7 @@ const ReservationConfirmation = () => {
 
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button asChild variant="elegant"><Link to="/catalogue">Retour au catalogue</Link></Button>
-            <Button asChild variant="hero"><a href={`mailto:contact@horizon-evasion.fr?subject=Visite ${res.reference}`}>Nous contacter</a></Button>
+            <Button asChild variant="hero"><a href={`mailto:contact@stservices-campingcar.fr?subject=Visite ${res.reference}`}>Nous contacter</a></Button>
           </div>
         </div>
       </section>

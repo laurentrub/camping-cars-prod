@@ -27,7 +27,7 @@ export function SiteHeader() {
             H
           </div>
           <div className="leading-tight">
-            <div className="font-serif text-lg font-semibold text-foreground">Horizon Évasion</div>
+            <div className="font-serif text-lg font-semibold text-foreground">ST Services</div>
             <div className="text-[10px] uppercase tracking-[0.2em] text-accent">Camping-cars premium</div>
           </div>
         </Link>

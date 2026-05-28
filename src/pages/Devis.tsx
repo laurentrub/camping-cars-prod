@@ -124,14 +124,14 @@ const Devis = () => {
   if (submitted) {
     return (
       <>
-        <SEO title="Demande de devis envoyée | Horizon Évasion" description="Votre demande de devis a bien été reçue." />
+        <SEO title="Demande de devis envoyée | ST Services" description="Votre demande de devis a bien été reçue." />
         <section className="container-prose flex min-h-[60vh] flex-col items-center justify-center py-20 text-center">
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent/10 text-accent">
             <CheckCircle2 className="h-8 w-8" />
           </div>
           <h1 className="mt-6 font-serif text-3xl font-semibold">Demande bien reçue !</h1>
           <p className="mt-3 max-w-md text-muted-foreground">
-            Un conseiller Horizon Évasion vous recontacte sous <strong className="text-foreground">24h ouvrées</strong> avec
+            Un conseiller ST Services vous recontacte sous <strong className="text-foreground">24h ouvrées</strong> avec
             une proposition adaptée à votre projet.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -150,7 +150,7 @@ const Devis = () => {
   return (
     <>
       <SEO
-        title="Demander un devis — Camping-car sur mesure | Horizon Évasion"
+        title="Demander un devis — Camping-car sur mesure | ST Services"
         description="Décrivez votre projet camping-car et recevez un devis personnalisé sous 24h de nos conseillers experts."
       />
 

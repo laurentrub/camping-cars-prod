@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div>
           <div className="flex items-center gap-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-md bg-accent text-accent-foreground font-serif text-lg">H</div>
-            <div className="font-serif text-lg font-semibold">Horizon Évasion</div>
+            <div className="font-serif text-lg font-semibold">ST Services</div>
           </div>
           <p className="mt-4 text-sm text-primary-foreground/70 leading-relaxed">
             Concessionnaire spécialiste du camping-car neuf et d'occasion depuis 1998. Vente, reprise, financement et SAV.
@@ -36,7 +36,7 @@ export function SiteFooter() {
             </li>
             <li className="flex items-start gap-2">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              <span>25 route de l'Aventure<br />33000 Bordeaux</span>
+              <span>4 Rue des Portes<br />16130 Saint-Fort-sur-le-Né</span>
             </li>
             <li className="flex items-start gap-2">
               <Clock className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
@@ -62,7 +62,7 @@ export function SiteFooter() {
 
       <div className="border-t border-primary-foreground/10">
         <div className="container-prose flex flex-col items-center justify-between gap-2 py-5 text-xs text-primary-foreground/60 md:flex-row">
-          <div>© {new Date().getFullYear()} Horizon Évasion — Tous droits réservés</div>
+          <div>© {new Date().getFullYear()} ST Services — Tous droits réservés</div>
           <div className="flex flex-wrap justify-center gap-4">
             <Link to="/mentions-legales" className="hover:text-accent">Mentions légales</Link>
             <Link to="/cgv" className="hover:text-accent">CGV</Link>

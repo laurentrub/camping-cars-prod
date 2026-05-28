@@ -59,7 +59,7 @@ const VehicleDetail = () => {
   return (
     <>
       <SEO
-        title={`${vehicle.title} — ${formatPrice(vehicle.price)} | Horizon Évasion`}
+        title={`${vehicle.title} — ${formatPrice(vehicle.price)} | ST Services`}
         description={vehicle.short_description ?? vehicle.description.slice(0, 155)}
         image={cover}
         jsonLd={jsonLd}

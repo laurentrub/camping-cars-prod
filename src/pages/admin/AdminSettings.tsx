@@ -66,7 +66,7 @@ const AdminSettings = () => {
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <Label>Bénéficiaire (titulaire du compte)</Label>
-              <Input value={s.account_holder} onChange={(e) => setS({ ...s, account_holder: e.target.value })} placeholder="SARL Horizon Évasion" />
+              <Input value={s.account_holder} onChange={(e) => setS({ ...s, account_holder: e.target.value })} placeholder="SARL ST Services" />
             </div>
             <div className="sm:col-span-2">
               <Label>Banque</Label>
