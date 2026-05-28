@@ -37,9 +37,8 @@ const MentionsLegales = () => (
 
       <LegalSection id="hebergement" number="2" title="Hébergement">
         <p>
-          Le site est hébergé par <strong className="text-foreground">Supabase Inc.</strong> (base de données et
-          authentification) et <strong className="text-foreground">Vercel Inc.</strong> (frontend), dont les serveurs
-          sont situés dans l'Union européenne et aux États-Unis dans le cadre du Privacy Shield / clauses contractuelles types.
+          Le site est hébergé par <strong className="text-foreground">OVH SAS</strong>, 2 rue Kellermann,
+          59100 Roubaix, France — <a href="https://www.ovh.com" className="text-accent hover:underline">www.ovh.com</a>.
         </p>
       </LegalSection>
 
