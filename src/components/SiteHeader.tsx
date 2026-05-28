@@ -23,8 +23,8 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/85 backdrop-blur-md">
       <div className="container-prose flex h-16 items-center justify-between md:h-20">
         <Link to="/" className="flex items-center gap-2 group" onClick={() => setOpen(false)}>
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif text-lg shadow-soft transition-smooth group-hover:shadow-gold">
-            H
+          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif text-xs font-bold shadow-soft transition-smooth group-hover:shadow-gold">
+            ST
           </div>
           <div className="leading-tight">
             <div className="font-serif text-lg font-semibold text-foreground">ST Services</div>

@@ -62,7 +62,7 @@ const AdminLayout = () => {
       <aside className="hidden w-64 flex-col border-r border-border bg-card md:flex">
         <div className="border-b border-border p-5">
           <Link to={homeLink} className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif">H</div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-md bg-gradient-deep text-primary-foreground font-serif text-xs font-bold">ST</div>
             <div>
               <div className="font-serif text-base font-semibold">ST Services</div>
               <div className="text-[10px] uppercase tracking-wider text-accent">Admin</div>
