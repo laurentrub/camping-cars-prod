@@ -9,7 +9,7 @@ const SERVICES = [
   { icon: Repeat, title: "Reprise de votre véhicule", text: "Estimation transparente sous 24h. Nous reprenons tous types de camping-cars, même non roulants. Paiement comptant sous 48h.", points: ["Estimation gratuite", "Paiement sous 48h", "Reprise possible à distance"] },
   { icon: FileCheck, title: "Financement sur mesure", text: "Solutions de financement personnalisées : crédit classique, location longue durée, location avec option d'achat. Réponse de principe en 48h.", points: ["TAEG dès 0,9%", "Durée 12 à 120 mois", "Premier loyer offert -1 mois"] },
   { icon: Shield, title: "Garantie premium", text: "Tous nos véhicules sont garantis pièces et main d'œuvre. Extension possible jusqu'à 24 mois. Assistance 7j/7 partout en Europe.", points: ["Garantie 12 à 24 mois", "Assistance Europe 24/7", "Pièces d'origine"] },
-  { icon: Wrench, title: "Atelier & SAV", text: "Notre atelier intégré assure l'entretien, les révisions et toutes les réparations. Mécaniciens spécialistes camping-car.", points: ["Atelier 800 m²", "Carrosserie & étanchéité", "Rendez-vous sous 7 jours"] },
+  { icon: Wrench, title: "Entretien & SAV", text: "Révisions, réparations, étanchéité, électronique : nous assurons le suivi technique de votre véhicule après achat.", points: ["Mécaniciens spécialistes", "Carrosserie & étanchéité", "Rendez-vous rapide"] },
   { icon: Sparkles, title: "Préparation & accessoires", text: "Antennes satellite, panneaux solaires, attelages, porte-vélos, climatisation… Posez et personnalisez votre véhicule chez nous.", points: ["Plus de 500 références", "Pose certifiée", "Devis gratuit"] },
 ];
 
@@ -27,7 +27,7 @@ const Services = () => (
           Un accompagnement professionnel à chaque étape de votre projet.
         </h1>
         <p className="mt-4 max-w-2xl text-primary-foreground/85">
-          De l'achat au SAV, en passant par le financement et la reprise : nos équipes mettent leur expertise à votre service depuis 1998.
+          De l'achat au SAV, en passant par la reprise : notre équipe met son expertise à votre service.
         </p>
       </div>
     </section>
