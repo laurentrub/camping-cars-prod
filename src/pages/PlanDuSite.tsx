@@ -10,7 +10,7 @@ const SECTIONS = [
       { to: "/catalogue", label: "Catalogue des camping-cars" },
       { to: "/services", label: "Nos services" },
       { to: "/reprise", label: "Reprise de votre véhicule" },
-      { to: "/a-propos", label: "À propos d'ST Services" },
+      { to: "/a-propos", label: "À propos de ST Services" },
       { to: "/contact", label: "Contact & accès" },
       { to: "/favoris", label: "Mes favoris" },
     ],
