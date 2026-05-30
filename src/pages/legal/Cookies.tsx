@@ -30,7 +30,7 @@ const Cookies = () => (
           headers={["Nom", "Finalité", "Durée"]}
           rows={[
             ["sb-auth-token", "Session d'authentification (espace admin)", "Session"],
-            ["he_favorites", "Sauvegarde des véhicules favoris (localStorage)", "Permanent"],
+            ["st_favorites", "Sauvegarde des véhicules favoris (localStorage)", "Permanent"],
           ]}
         />
 
@@ -44,11 +44,6 @@ const Cookies = () => (
           ]}
         />
 
-        <p className="mt-5 font-medium text-foreground">Cookies tiers (carte interactive)</p>
-        <p className="mt-1">
-          La carte OpenStreetMap sur la page Contact peut déposer des cookies lors de son affichage.
-          Ces cookies sont soumis à la politique de confidentialité d'OpenStreetMap Foundation.
-        </p>
       </LegalSection>
 
       <LegalSection id="gestion" number="3" title="Gérer vos préférences">
@@ -73,8 +68,8 @@ const Cookies = () => (
 
       <LegalSection id="contact" number="4" title="Contact">
         <p>
-          Pour toute question relative à notre utilisation des cookies, contactez-nous au{" "}
-          <strong className="text-foreground">01 23 45 67 89</strong> ou consultez notre{" "}
+          Pour toute question relative à notre utilisation des cookies, contactez-nous par courrier au
+          4 Rue des Portes, 16130 Saint-Fort-sur-le-Né, ou consultez notre{" "}
           <a href="/politique-confidentialite" className="font-medium text-accent hover:underline">
             Politique de confidentialité
           </a>.
