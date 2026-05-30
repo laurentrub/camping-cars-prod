@@ -27,9 +27,9 @@ const PolitiqueConfidentialite = () => (
       <LegalSection id="responsable" number="1" title="Responsable du traitement">
         <p>Le responsable du traitement de vos données est :</p>
         <div className="mt-3 rounded-lg border border-border bg-card p-4">
-          <p className="font-semibold text-foreground">ST Services</p>
+          <p className="font-semibold text-foreground">DESTOCK'LOISIRS / ST SERVICES</p>
+          <p>Robert Stéphane — SIREN 828 610 758</p>
           <p>4 Rue des Portes, 16130 Saint-Fort-sur-le-Né</p>
-          <p>Téléphone : 01 23 45 67 89</p>
         </div>
       </LegalSection>
 
@@ -74,7 +74,7 @@ const PolitiqueConfidentialite = () => (
 
       <LegalSection id="destinataires" number="5" title="Destinataires">
         <p>
-          Vos données sont destinées exclusivement aux équipes d'ST Services (conseillers, SAV).
+          Vos données sont destinées exclusivement à ST Services.
           Elles ne sont ni vendues, ni louées, ni cédées à des tiers à des fins commerciales.
         </p>
         <p className="mt-2">
@@ -101,7 +101,7 @@ const PolitiqueConfidentialite = () => (
           ))}
         </div>
         <LegalNote>
-          Pour exercer ces droits, contactez-nous par téléphone au 01 23 45 67 89 ou par courrier.
+          Pour exercer ces droits, contactez-nous par courrier à l'adresse : 4 Rue des Portes, 16130 Saint-Fort-sur-le-Né.
           Vous pouvez également introduire une réclamation auprès de la{" "}
           <strong className="text-foreground">CNIL</strong> (www.cnil.fr).
         </LegalNote>
