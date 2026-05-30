@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-const KEY = "he_favorites";
+const KEY = "st_favorites";
 
 function load(): string[] {
   try {
