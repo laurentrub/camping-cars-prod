@@ -24,9 +24,11 @@ const CGV = () => (
       <LegalSection id="objet" number="1" title="Objet et champ d'application">
         <p>
           Les présentes CGV régissent les relations contractuelles entre{" "}
-          <strong className="text-foreground">ST Services</strong> (« le Vendeur ») et tout acheteur
-          (« l'Acheteur ») pour toute vente de véhicule de loisirs (neuf ou d'occasion) et toute prestation
-          associée (entretien, accessoires, financement, reprise).
+          <strong className="text-foreground">DESTOCK'LOISIRS / ST SERVICES</strong>, entreprise individuelle
+          exploitée par Robert Stéphane (SIREN 828 610 758 — RCS Angoulême), dont le siège social est situé
+          au 4 Rue des Portes, 16130 Saint-Fort-sur-le-Né (« le Vendeur »), et tout acheteur (« l'Acheteur »)
+          pour toute vente de véhicule de loisirs (neuf ou d'occasion) et toute prestation associée
+          (accessoires, reprise).
         </p>
         <p>Toute commande implique l'acceptation pleine et entière des présentes CGV.</p>
       </LegalSection>
