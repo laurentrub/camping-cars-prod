@@ -21,14 +21,15 @@ const MentionsLegales = () => (
       <LegalSection id="editeur" number="1" title="Éditeur du site">
         <p>
           Le site <strong className="text-foreground">stservices-campingcar.fr</strong> est édité par{" "}
-          <strong className="text-foreground">Robert Stéphane</strong>, entrepreneur individuel (SIREN 828 610 758 — RCS Angoulême),
-          dont le siège social se trouve au 4 Rue des Portes, 16130 Saint-Fort-sur-le-Né.
+          <strong className="text-foreground">Robert Stéphane</strong>, entrepreneur individuel exerçant
+          sous les enseignes <strong className="text-foreground">Destock'Loisirs</strong> /{" "}
+          <strong className="text-foreground">ST Services</strong>.
         </p>
         <LegalList items={[
+          { label: "Siège social :", value: "4 Rue des Portes, 16130 Saint-Fort-sur-le-Né, France" },
           { label: "SIRET :", value: "828 610 758 00033" },
-          { label: "N° TVA intracommunautaire :", value: "FR94828610758" },
-          { label: "Directeur de publication :", value: "Robert Stéphane" },
-        ]} />
+          { label: "N° RCS :", value: "828 610 758 R.C.S. Angoulême" },
+          { label: "N° TVA intracommunautaire :", value: "FR94828610758" },        ]} />
       </LegalSection>
 
       <LegalSection id="hebergement" number="2" title="Hébergement">
